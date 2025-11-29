@@ -35,6 +35,12 @@ const subjects = [
     description: 'Policy, languages, cultural studies, and international relations.',
     color: '#ffec8c',
   },
+  {
+    id: 'Computer',
+    name: 'Computer Science',
+    description: 'Computer science, software engineering, and artificial intelligence.',
+    color: '#8ad2ff',
+  },
 ];
 
 export default subjects;
