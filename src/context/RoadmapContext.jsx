@@ -6,7 +6,7 @@ import { useUserCode } from './UserCodeContext.jsx';
 const RoadmapContext = createContext(null);
 
 const STORAGE_KEY = 'yonko_roadmap_data';
-const API_BASE_URL = process.env.VITE_API_BASE_URL || 'http://localhost:3000/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api';
 
 // Initialize default roadmap data structure
 const getDefaultRoadmapData = (universityId = null) => ({
