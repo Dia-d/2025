@@ -7,15 +7,28 @@ import { useUniversities } from '../context/UniversitiesContext.jsx';
 import { universityMatchesSubjects } from '../data/subjectMapping.js';
 
 const Landing = () => {
-  const [activeSubjects, setActiveSubjects] = useState([subjects[0].id]);
+  const [activeSubjects, setActiveSubjects] = useState([]);
   const { universities } = useUniversities();
 
   const highlightCountries = useMemo(() => {
-    if (activeSubjects.length === 0) return { all: [], top: null };
+    console.log('🎯 Landing - Calculating highlights for subjects:', activeSubjects);
+    console.log('🎯 Total universities:', universities.length);
     
-    const matched = universities.filter((uni) =>
-      universityMatchesSubjects(uni.specialisedsubj || uni.focus, activeSubjects),
-    );
+    // If no subjects selected, don't highlight any countries
+    if (activeSubjects.length === 0) {
+      return { all: [], top: null };
+    }
+    
+    const matched = universities.filter((uni) => {
+      const subjects = uni.specialisedsubj || uni.focus;
+      const matches = universityMatchesSubjects(subjects, activeSubjects);
+      if (matches) {
+        console.log(`✅ Matched: ${uni.name} (${uni.country}) - subjects:`, subjects);
+      }
+      return matches;
+    });
+    
+    console.log('🎯 Total matched universities:', matched.length);
     
     // Count universities per country
     const countryCounts = {};
@@ -26,6 +39,8 @@ const Landing = () => {
       }
     });
     
+    console.log('🎯 Country counts:', countryCounts);
+    
     // Find country with most universities
     const topCountryEntry = Object.entries(countryCounts).reduce(
       (max, [country, count]) => (count > (max[1] || 0) ? [country, count] : max),
@@ -35,25 +50,11 @@ const Landing = () => {
     const topCountry = topCountryEntry[1] > 0 ? topCountryEntry[0] : null;
     const allCountries = [...new Set(matched.map((uni) => uni.country).filter(Boolean))];
     
-    // Debug logging
-    console.log('🎯 Landing - Highlight countries calculation:', { 
-      all: allCountries, 
+    console.log('🎯 Result:', {
+      all: allCountries,
       top: topCountry,
-      topCount: topCountryEntry[1],
-      countryCounts,
-      activeSubjects,
-      matchedCount: matched.length,
-      universitiesCount: universities.length,
+      topCount: topCountryEntry[1]
     });
-    
-    // Log sample universities to verify country codes
-    if (matched.length > 0) {
-      console.log('📊 Sample matched universities:', matched.slice(0, 3).map(u => ({
-        name: u.name,
-        country: u.country,
-        subjects: u.specialisedsubj || u.focus,
-      })));
-    }
     
     return {
       all: allCountries,

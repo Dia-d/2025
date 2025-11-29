@@ -7,22 +7,25 @@ import { getAllRequirements, getTotalScore } from '../data/requirementsConfig.js
 const RoadmapContext = createContext(null);
 
 const STORAGE_KEY = 'yonko_roadmap_data';
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
 
 // Initialize default roadmap data structure
 const getDefaultRoadmapData = (universityId = null, countryCode = null) => {
   const requirements = getAllRequirements(countryCode);
   const requirementsStatus = {};
+  const notes = {};
   
-  // Initialize all requirements as incomplete
+  // Initialize all requirements as incomplete with empty notes
   requirements.forEach((req) => {
     requirementsStatus[req.id] = false;
+    notes[req.id] = '';
   });
   
   return {
     university_id: universityId,
     country_code: countryCode,
     requirements: requirementsStatus,
+    notes: notes,
   };
 };
 
@@ -30,6 +33,12 @@ export const RoadmapProvider = ({ children }) => {
   const { code } = useUserCode();
   const [roadmapData, setRoadmapData] = useState(null);
   const [loading, setLoading] = useState(false); // Start as false, only set to true when actually loading
+
+  // Clear roadmap data when user code changes (logout/login)
+  useEffect(() => {
+    console.log('🔄 User code changed:', code);
+    setRoadmapData(null); // Clear old user's data
+  }, [code]);
 
   // Load roadmap data from backend or localStorage
   useEffect(() => {
@@ -52,8 +61,12 @@ export const RoadmapProvider = ({ children }) => {
           clearTimeout(timeoutId);
           
           if (response.ok) {
-            const data = await response.json();
-            setRoadmapData(data);
+            const allRoadmaps = await response.json();
+            // Store all roadmaps in localStorage as backup
+            if (typeof window !== 'undefined' && window.localStorage) {
+              window.localStorage.setItem(`${STORAGE_KEY}_${code}`, JSON.stringify(allRoadmaps));
+            }
+            // Don't set roadmapData here - it will be set when a specific university is selected
             setLoading(false);
             return;
           }
@@ -66,21 +79,13 @@ export const RoadmapProvider = ({ children }) => {
         try {
           const stored = typeof window !== 'undefined' ? window.localStorage.getItem(`${STORAGE_KEY}_${code}`) : null;
           if (stored) {
-            setRoadmapData(JSON.parse(stored));
+            // Data is stored, but we don't load it until a university is selected
           }
         } catch (storageError) {
           // localStorage not available or error
         }
       } catch (error) {
         // Silently handle all errors
-        try {
-          const stored = typeof window !== 'undefined' ? window.localStorage.getItem(`${STORAGE_KEY}_${code}`) : null;
-          if (stored) {
-            setRoadmapData(JSON.parse(stored));
-          }
-        } catch (parseError) {
-          // Invalid stored data, ignore
-        }
       } finally {
         setLoading(false);
       }
@@ -91,43 +96,121 @@ export const RoadmapProvider = ({ children }) => {
 
   // Save roadmap data to backend and localStorage
   const saveRoadmapData = async (data) => {
-    if (!code) return;
+    if (!code) {
+      console.warn('⚠️ Cannot save: No user code');
+      return;
+    }
 
     setRoadmapData(data);
 
-    // Save to localStorage immediately
+    // Save to localStorage immediately - store per university
     try {
       if (typeof window !== 'undefined' && window.localStorage) {
-        window.localStorage.setItem(`${STORAGE_KEY}_${code}`, JSON.stringify(data));
+        const storageKey = `${STORAGE_KEY}_${code}_${data.university_id}`;
+        window.localStorage.setItem(storageKey, JSON.stringify(data));
+        console.log('✅ Saved to localStorage:', storageKey);
       }
     } catch (error) {
-      // Silently handle localStorage errors
+      console.error('❌ localStorage save failed:', error);
     }
 
     // Try to save to backend (non-blocking with timeout)
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 2000);
+    const timeoutId = setTimeout(() => controller.abort(), 3000);
     
-    fetch(`${API_BASE_URL}/roadmap/${code}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-      signal: controller.signal,
-    })
-      .then(() => clearTimeout(timeoutId))
-      .catch(() => {
-        clearTimeout(timeoutId);
-        // Silently fail - data is already in localStorage
+    try {
+      const response = await fetch(`${API_BASE_URL}/roadmap/${code}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+        signal: controller.signal,
       });
+      
+      clearTimeout(timeoutId);
+      
+      if (response.ok) {
+        console.log('✅ Saved to backend:', data.university_id);
+      } else {
+        const errorText = await response.text();
+        console.error('❌ Backend save failed:', response.status, errorText);
+      }
+    } catch (error) {
+      clearTimeout(timeoutId);
+      console.warn('⚠️ Backend not available:', error.message);
+      // Data is already in localStorage, so this is okay
+    }
   };
 
   // Initialize roadmap for a university
   const initializeRoadmap = async (universityId, countryCode) => {
-    if (!code) return null;
+    if (!code) {
+      console.warn('⚠️ Cannot initialize roadmap: No user code');
+      return null;
+    }
 
+    console.log(`🎯 Initializing roadmap for ${universityId} (${countryCode})`);
+    
+    // Check if data exists in localStorage first
+    try {
+      const storageKey = `${STORAGE_KEY}_${code}_${universityId}`;
+      const stored = typeof window !== 'undefined' ? window.localStorage.getItem(storageKey) : null;
+      
+      if (stored) {
+        console.log('📦 Found existing data in localStorage');
+        const existingData = JSON.parse(stored);
+        setRoadmapData(existingData);
+        return existingData;
+      }
+    } catch (error) {
+      console.warn('⚠️ Error loading from localStorage:', error);
+    }
+    
+    // No existing data, create new with auto-complete from other universities
     const newData = getDefaultRoadmapData(universityId, countryCode);
+    
+    // Check other universities for completed requirements
+    const autoCompletedRequirements = [];
+    try {
+      const allRoadmapsKey = `${STORAGE_KEY}_${code}`;
+      const allStored = typeof window !== 'undefined' ? window.localStorage.getItem(allRoadmapsKey) : null;
+      
+      if (allStored) {
+        const allRoadmaps = JSON.parse(allStored);
+        const roadmapsData = allRoadmaps.roadmaps || allRoadmaps;
+        
+        // Get all completed requirements from other universities
+        const completedInOtherUnis = new Set();
+        Object.entries(roadmapsData).forEach(([uniId, roadmap]) => {
+          if (uniId !== universityId && roadmap && roadmap.requirements) {
+            Object.entries(roadmap.requirements).forEach(([reqId, completed]) => {
+              if (completed) {
+                completedInOtherUnis.add(reqId);
+              }
+            });
+          }
+        });
+        
+        // Auto-complete matching requirements
+        completedInOtherUnis.forEach((reqId) => {
+          if (newData.requirements.hasOwnProperty(reqId)) {
+            newData.requirements[reqId] = true;
+            autoCompletedRequirements.push(reqId);
+          }
+        });
+        
+        console.log('✨ Auto-completed requirements:', autoCompletedRequirements);
+      }
+    } catch (error) {
+      console.warn('⚠️ Error checking for auto-complete:', error);
+    }
+    
+    // Store auto-completed items for notification
+    if (autoCompletedRequirements.length > 0) {
+      newData.autoCompleted = autoCompletedRequirements;
+    }
+    
     await saveRoadmapData(newData);
     return newData;
   };
@@ -141,6 +224,21 @@ export const RoadmapProvider = ({ children }) => {
       requirements: {
         ...roadmapData.requirements,
         [requirementId]: value,
+      },
+    };
+
+    await saveRoadmapData(updatedData);
+  };
+
+  // Update notes for a specific requirement
+  const updateNote = async (requirementId, note) => {
+    if (!code || !roadmapData) return;
+
+    const updatedData = {
+      ...roadmapData,
+      notes: {
+        ...(roadmapData.notes || {}),
+        [requirementId]: note,
       },
     };
 
@@ -189,17 +287,41 @@ export const RoadmapProvider = ({ children }) => {
     await saveRoadmapData(updatedData);
   };
 
+  // Check if a university is completed
+  const isUniversityCompleted = (universityId) => {
+    if (!code) return false;
+    
+    try {
+      // Try to get from backend data first
+      const stored = typeof window !== 'undefined' ? window.localStorage.getItem(`${STORAGE_KEY}_${code}`) : null;
+      if (stored) {
+        const allRoadmaps = JSON.parse(stored);
+        const uniRoadmap = allRoadmaps[universityId];
+        if (uniRoadmap && uniRoadmap.requirements) {
+          const requirements = getAllRequirements(uniRoadmap.country_code);
+          const completedCount = Object.values(uniRoadmap.requirements).filter(Boolean).length;
+          return completedCount === requirements.length;
+        }
+      }
+    } catch (error) {
+      console.error('Error checking university completion:', error);
+    }
+    return false;
+  };
+
   const value = useMemo(
     () => ({
       roadmapData,
       loading,
       initializeRoadmap,
       updateRequirement,
+      updateNote,
       updateUniversity,
       saveRoadmapData,
       calculateProgress,
+      isUniversityCompleted,
     }),
-    [roadmapData, loading],
+    [roadmapData, loading, code],
   );
 
   return <RoadmapContext.Provider value={value}>{children}</RoadmapContext.Provider>;

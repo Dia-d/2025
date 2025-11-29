@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backend Data Viewer - Yonko Scholars</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 2rem;
+        }
+        
+        .status {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .status.success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .status.error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .status.loading {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #374151;
+        }
+        
+        .btn-secondary:hover {
+            background: #d1d5db;
+        }
+        
+        .data-container {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        pre {
+            background: #1f2937;
+            color: #f3f4f6;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+        
+        .user-list {
+            margin-top: 1rem;
+        }
+        
+        .user-item {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .user-code {
+            font-family: monospace;
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.1rem;
+        }
+        
+        .roadmap-count {
+            color: #666;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 Backend Data Viewer</h1>
+        <p class="subtitle">Monitor your Yonko Scholars backend data in real-time</p>
+        
+        <div id="status" class="status loading">
+            <span>⏳</span>
+            <span>Connecting to backend...</span>
+        </div>
+        
+        <div class="actions">
+            <button class="btn-primary" onclick="loadData()">🔄 Refresh Data</button>
+            <button class="btn-secondary" onclick="checkHealth()">❤️ Check Health</button>
+            <button class="btn-secondary" onclick="createTestUser()">➕ Create Test User</button>
+        </div>
+        
+        <div class="stats" id="stats"></div>
+        
+        <div class="data-container">
+            <h3>📊 All Users Data</h3>
+            <div id="users" class="user-list"></div>
+        </div>
+        
+        <div class="data-container">
+            <h3>🔍 Raw JSON Data</h3>
+            <pre id="rawData">Loading...</pre>
+        </div>
+    </div>
+    
+    <script>
+        const API_BASE_URL = 'http://localhost:5000/api';
+        
+        async function checkHealth() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/health`);
+                const data = await response.json();
+                
+                document.getElementById('status').className = 'status success';
+                document.getElementById('status').innerHTML = `
+                    <span>✅</span>
+                    <span>Backend is healthy! ${data.users} users in database</span>
+                `;
+            } catch (error) {
+                document.getElementById('status').className = 'status error';
+                document.getElementById('status').innerHTML = `
+                    <span>❌</span>
+                    <span>Backend is not responding: ${error.message}</span>
+                `;
+            }
+        }
+        
+        async function loadData() {
+            try {
+                // First check health
+                await checkHealth();
+                
+                // Load all users data
+                const response = await fetch('http://localhost:5000/backend/data.json');
+                let data = {};
+                
+                if (response.ok) {
+                    data = await response.json();
+                }
+                
+                // Display stats
+                const userCount = Object.keys(data).length;
+                let totalRoadmaps = 0;
+                
+                Object.values(data).forEach(user => {
+                    if (user.roadmaps) {
+                        totalRoadmaps += Object.keys(user.roadmaps).length;
+                    }
+                });
+                
+                document.getElementById('stats').innerHTML = `
+                    <div class="stat-card">
+                        <div class="stat-value">${userCount}</div>
+                        <div class="stat-label">Total Users</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${totalRoadmaps}</div>
+                        <div class="stat-label">Total Roadmaps</div>
+                    </div>
+                `;
+                
+                // Display users
+                if (userCount === 0) {
+                    document.getElementById('users').innerHTML = '<p style="color: #666;">No users yet. Create one in the app!</p>';
+                } else {
+                    let usersHTML = '';
+                    Object.entries(data).forEach(([code, userData]) => {
+                        const roadmapCount = userData.roadmaps ? Object.keys(userData.roadmaps).length : 0;
+                        usersHTML += `
+                            <div class="user-item">
+                                <div class="user-code">${code}</div>
+                                <div class="roadmap-count">${roadmapCount} roadmap(s)</div>
+                            </div>
+                        `;
+                    });
+                    document.getElementById('users').innerHTML = usersHTML;
+                }
+                
+                // Display raw JSON
+                document.getElementById('rawData').textContent = JSON.stringify(data, null, 2);
+                
+            } catch (error) {
+                document.getElementById('rawData').textContent = `Error loading data: ${error.message}`;
+            }
+        }
+        
+        async function createTestUser() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/user`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    alert(`✅ Test user created!\n\nSession ID: ${data.key}\n\nCopy this code to use in the app.`);
+                    loadData();
+                } else {
+                    alert('❌ Failed to create user');
+                }
+            } catch (error) {
+                alert(`❌ Error: ${error.message}`);
+            }
+        }
+        
+        // Load data on page load
+        loadData();
+        
+        // Auto-refresh every 5 seconds
+        setInterval(loadData, 5000);
+    </script>
+</body>
+</html>

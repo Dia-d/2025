@@ -22,7 +22,29 @@ export const UserCodeProvider = ({ children }) => {
     }
   }, [code]);
 
-  const value = useMemo(() => ({ code, setCode }), [code]);
+  const clearCode = () => {
+    console.log('🚪 Logging out, clearing data for user:', code);
+    
+    // Clear all roadmap data for this user
+    if (code && typeof window !== 'undefined' && window.localStorage) {
+      // Get all localStorage keys
+      const keys = Object.keys(window.localStorage);
+      
+      // Remove all keys that belong to this user
+      keys.forEach(key => {
+        if (key.startsWith(`yonko_roadmap_data_${code}`)) {
+          console.log('🗑️ Removing:', key);
+          window.localStorage.removeItem(key);
+        }
+      });
+    }
+    
+    setCode(null);
+    window.localStorage.removeItem(STORAGE_KEY);
+    console.log('✅ Logout complete');
+  };
+
+  const value = useMemo(() => ({ code, setCode, clearCode }), [code]);
 
   return <UserCodeContext.Provider value={value}>{children}</UserCodeContext.Provider>;
 };

@@ -1,125 +1,91 @@
 {
-  "harvard": {
-    "name": "Harvard University",
-    "location": "US",
-    "city": "Cambridge",
-    "specialisedsubj": ["law", "doctorate", "business", "health", "humanities"],
-    "minimumgpa": 3.6,
-    "satsmin": 1500,
-    "requiresToefl": true,
-    "requiresIelts": false,
-    "toeflMin": 100,
-    "ieltsMin": null,
-    "averagescores": {
-      "gpa": 3.9,
-      "sats": 1520
-    },
-    "tags": ["Ivy League", "Research", "Scholarships"]
-  },
-  "mit": {
-    "name": "Massachusetts Institute of Technology",
-    "location": "US",
-    "city": "Cambridge",
-    "specialisedsubj": ["engineering", "data", "Computer"],
-    "minimumgpa": 3.5,
-    "satsmin": 1500,
-    "requiresToefl": true,
-    "requiresIelts": false,
-    "toeflMin": 90,
-    "ieltsMin": null,
-    "averagescores": {
-      "gpa": 3.8,
-      "sats": 1530
-    },
-    "tags": ["Innovation", "Labs", "Scholarships"]
-  },
   "oxford": {
     "name": "University of Oxford",
-    "location": "GB",
+    "location": "UK",
     "city": "Oxford",
-    "specialisedsubj": ["humanities", "health", "law"],
+    "rank": 1,
+    "specialisedsubj": ["Life Sciences", "Law", "Education", "Arts and Humanities", "Business and Economics", "Clinical and Health", "Computer Science", "Engineering", "Social Sciences", "Physical Sciences"],
     "minimumgpa": 3.7,
     "satsmin": null,
     "requiresToefl": false,
     "requiresIelts": true,
     "toeflMin": null,
+    "ieltsMin": 7.5,
+    "averagescores": {
+      "gpa": 3.9,
+      "sats": null
+    },
+    "stats": {
+      "students": 20665,
+      "studentStaffRatio": 11.2,
+      "intlStudents": 41,
+      "femaleMaleRatio": "46:54",
+      "overallScore": 95.4
+    },
+    "tags": ["Collegiate", "Research", "Heritage", "Top Ranked"],
+    "description": "The University of Oxford is a collegiate research university in Oxford, England. There is evidence of teaching as early as 1096, making it the oldest university in the English-speaking world.",
+    "webAddress": "https://www.timeshighereducation.com/world-university-rankings/university-oxford"
+  },
+  "caltech": {
+    "name": "California Institute of Technology",
+    "location": "US",
+    "city": "Pasadena",
+    "rank": 2,
+    "specialisedsubj": ["Life Sciences", "Computer Science", "Engineering", "Physical Sciences"],
+    "minimumgpa": 3.8,
+    "satsmin": 1530,
+    "requiresToefl": true,
+    "requiresIelts": true,
+    "toeflMin": 100,
     "ieltsMin": 7.0,
     "averagescores": {
-      "gpa": 3.8,
-      "sats": null
+      "gpa": 3.95,
+      "sats": 1560
     },
-    "tags": ["Collegiate", "Research", "Heritage"]
+    "stats": {
+      "students": 2240,
+      "studentStaffRatio": 6.4,
+      "intlStudents": 30,
+      "femaleMaleRatio": "34:66",
+      "overallScore": 94.5
+    },
+    "tags": ["STEM Excellence", "Research", "Small Campus"],
+    "description": "The California Institute of Technology is a private research university in Pasadena, California. The university is responsible for many modern scientific advancements.",
+    "webAddress": "https://www.timeshighereducation.com/world-university-rankings/california-institute-technology-caltech"
   },
-  "melbourne": {
-    "name": "University of Melbourne",
-    "location": "AU",
-    "city": "Melbourne",
-    "specialisedsubj": ["health", "design", "business"],
-    "minimumgpa": 3.0,
+  "cambridge": {
+    "name": "University of Cambridge",
+    "location": "UK",
+    "city": "Cambridge",
+    "rank": 3,
+    "specialisedsubj": ["Life Sciences", "Law", "Education", "Arts and Humanities", "Business and Economics", "Clinical and Health", "Computer Science", "Engineering", "Social Sciences", "Psychology", "Physical Sciences"],
+    "minimumgpa": 3.7,
     "satsmin": null,
+    "requiresToefl": false,
+    "requiresIelts": true,
+    "toeflMin": null,
+    "ieltsMin": 7.5,
     "averagescores": {
-      "gpa": 3.5,
+      "gpa": 3.9,
       "sats": null
     },
-    "tags": ["Clinical", "Studios", "Fellowships"]
-  },
-  "tokyo": {
-    "name": "University of Tokyo",
-    "location": "JP",
-    "city": "Tokyo",
-    "specialisedsubj": ["engineering", "data", "Computer"],
-    "minimumgpa": 3.2,
-    "satsmin": null,
-    "averagescores": {
-      "gpa": 3.6,
-      "sats": null
+    "stats": {
+      "students": 18980,
+      "studentStaffRatio": 10.9,
+      "intlStudents": 37,
+      "femaleMaleRatio": "47:53",
+      "overallScore": 94.4
     },
-    "tags": ["AI", "Robotics", "Partnerships"]
-  },
-  "cape-town": {
-    "name": "University of Cape Town",
-    "location": "ZA",
-    "city": "Cape Town",
-    "specialisedsubj": ["humanities", "business", "health"],
-    "minimumgpa": 3.0,
-    "satsmin": null,
-    "averagescores": {
-      "gpa": 3.4,
-      "sats": null
-    },
-    "tags": ["Leadership", "Fieldwork", "Community"]
-  },
-  "ubc": {
-    "name": "University of British Columbia",
-    "location": "CA",
-    "city": "Vancouver",
-    "specialisedsubj": ["business", "design", "engineering"],
-    "minimumgpa": 3.3,
-    "satsmin": null,
-    "averagescores": {
-      "gpa": 3.6,
-      "sats": null
-    },
-    "tags": ["Sustainability", "Studios", "Internships"]
-  },
-  "helsinki": {
-    "name": "University of Helsinki",
-    "location": "FI",
-    "city": "Helsinki",
-    "specialisedsubj": ["data", "health", "Computer"],
-    "minimumgpa": 3.0,
-    "satsmin": null,
-    "averagescores": {
-      "gpa": 3.5,
-      "sats": null
-    },
-    "tags": ["Deep Tech", "Bio Labs", "Funding"]
+    "tags": ["Collegiate", "Research", "Heritage", "Top Ranked"],
+    "description": "The University of Cambridge is a public collegiate research university in Cambridge, England. Founded in 1209, it is the world's third-oldest university in continuous operation.",
+    "webAddress": "https://www.timeshighereducation.com/world-university-rankings/university-cambridge"
   },
   "stanford": {
     "name": "Stanford University",
     "location": "US",
     "city": "Stanford",
-    "specialisedsubj": ["engineering", "business", "Computer", "data"],
+    "rank": 4,
+    "specialisedsubj": ["Life Sciences", "Law", "Education", "Arts and Humanities", "Business and Economics", "Clinical and Health", "Computer Science", "Engineering", "Social Sciences", "Psychology", "Physical Sciences"],
     "minimumgpa": 3.7,
     "satsmin": 1480,
     "requiresToefl": true,
@@ -130,24 +96,745 @@
       "gpa": 3.95,
       "sats": 1505
     },
-    "tags": ["Silicon Valley", "Innovation", "Entrepreneurship"]
+    "stats": {
+      "students": 16135,
+      "studentStaffRatio": 7.3,
+      "intlStudents": 23,
+      "femaleMaleRatio": "43:57",
+      "overallScore": 94.3
+    },
+    "tags": ["Silicon Valley", "Innovation", "Entrepreneurship", "Top Ranked"],
+    "description": "Stanford University is a private research university in Stanford, California. Founded in 1885, it is renowned for its academic strength and proximity to Silicon Valley.",
+    "webAddress": "https://www.timeshighereducation.com/world-university-rankings/stanford-university"
   },
-  "cambridge": {
-    "name": "University of Cambridge",
-    "location": "GB",
+  "mit": {
+    "name": "Massachusetts Institute of Technology",
+    "location": "US",
     "city": "Cambridge",
-    "specialisedsubj": ["engineering", "humanities", "health", "law"],
+    "rank": 5,
+    "specialisedsubj": ["Life Sciences", "Arts and Humanities", "Business and Economics", "Computer Science", "Engineering", "Social Sciences", "Physical Sciences"],
     "minimumgpa": 3.7,
+    "satsmin": 1520,
+    "requiresToefl": true,
+    "requiresIelts": true,
+    "toeflMin": 90,
+    "ieltsMin": 7.0,
+    "averagescores": {
+      "gpa": 3.9,
+      "sats": 1545
+    },
+    "stats": {
+      "students": 11247,
+      "studentStaffRatio": 8.6,
+      "intlStudents": 34,
+      "femaleMaleRatio": "39:61",
+      "overallScore": 93.6
+    },
+    "tags": ["Innovation", "Labs", "Scholarships", "STEM Excellence"],
+    "description": "The Massachusetts Institute of Technology is a private research university in Cambridge, Massachusetts. Established in 1861, MIT has played a significant role in modern technology and science.",
+    "webAddress": "https://www.timeshighereducation.com/world-university-rankings/massachusetts-institute-technology"
+  },
+  "princeton": {
+    "name": "Princeton University",
+    "location": "US",
+    "city": "Princeton",
+    "rank": 6,
+    "specialisedsubj": ["Life Sciences", "Arts and Humanities", "Computer Science", "Engineering", "Social Sciences", "Psychology", "Physical Sciences"],
+    "minimumgpa": 3.7,
+    "satsmin": 1500,
+    "requiresToefl": true,
+    "requiresIelts": true,
+    "toeflMin": 100,
+    "ieltsMin": 7.0,
+    "averagescores": {
+      "gpa": 3.9,
+      "sats": 1520
+    },
+    "stats": {
+      "students": 7983,
+      "studentStaffRatio": 8.1,
+      "intlStudents": 25,
+      "femaleMaleRatio": "45:55",
+      "overallScore": 93.2
+    },
+    "tags": ["Ivy League", "Research", "Undergraduate Focus"],
+    "description": "Princeton University is a private institution founded in 1746. It has a total undergraduate enrollment of 5,671, with a suburban setting and 690-acre campus.",
+    "webAddress": "https://www.timeshighereducation.com/world-university-rankings/princeton-university"
+  },
+  "harvard": {
+    "name": "Harvard University",
+    "location": "US",
+    "city": "Cambridge",
+    "rank": 7,
+    "specialisedsubj": ["Life Sciences", "Law", "Education", "Arts and Humanities", "Business and Economics", "Clinical and Health", "Computer Science", "Engineering", "Social Sciences", "Psychology", "Physical Sciences"],
+    "minimumgpa": 3.7,
+    "satsmin": 1500,
+    "requiresToefl": true,
+    "requiresIelts": true,
+    "toeflMin": 100,
+    "ieltsMin": 7.0,
+    "averagescores": {
+      "gpa": 3.9,
+      "sats": 1520
+    },
+    "stats": {
+      "students": 20823,
+      "studentStaffRatio": 9.2,
+      "intlStudents": 24,
+      "femaleMaleRatio": "49:51",
+      "overallScore": 93.0
+    },
+    "tags": ["Ivy League", "Research", "Scholarships", "Prestigious"],
+    "description": "Harvard University is a private Ivy League research university in Cambridge, Massachusetts. Founded in 1636, it is the oldest institution of higher learning in the United States.",
+    "webAddress": "https://www.timeshighereducation.com/world-university-rankings/harvard-university"
+  },
+  "yale": {
+    "name": "Yale University",
+    "location": "US",
+    "city": "New Haven",
+    "rank": 8,
+    "specialisedsubj": ["Life Sciences", "Law", "Arts and Humanities", "Business and Economics", "Clinical and Health", "Computer Science", "Engineering", "Social Sciences", "Psychology", "Physical Sciences"],
+    "minimumgpa": 3.7,
+    "satsmin": 1500,
+    "requiresToefl": true,
+    "requiresIelts": true,
+    "toeflMin": 100,
+    "ieltsMin": 7.0,
+    "averagescores": {
+      "gpa": 3.9,
+      "sats": 1515
+    },
+    "stats": {
+      "students": 12402,
+      "studentStaffRatio": 5.4,
+      "intlStudents": 20,
+      "femaleMaleRatio": "50:50",
+      "overallScore": 91.7
+    },
+    "tags": ["Ivy League", "Liberal Arts", "Research"],
+    "description": "Yale University is a private Ivy League research university in New Haven, Connecticut. Founded in 1701, it is the third-oldest institution of higher education in the United States.",
+    "webAddress": "https://www.timeshighereducation.com/world-university-rankings/yale-university"
+  }
+,
+  "chicago": {
+    "name": "The University of Chicago",
+    "location": "US",
+    "city": "Chicago",
+    "rank": 9,
+    "specialisedsubj": ["Life Sciences", "Law", "Arts and Humanities", "Business and Economics", "Clinical and Health", "Computer Science", "Social Sciences", "Psychology", "Physical Sciences"],
+    "minimumgpa": 3.6,
+    "satsmin": 1500,
+    "requiresToefl": true,
+    "requiresIelts": true,
+    "toeflMin": 100,
+    "ieltsMin": 7.0,
+    "averagescores": {
+      "gpa": 3.85,
+      "sats": 1520
+    },
+    "stats": {
+      "students": 13833,
+      "studentStaffRatio": 5.7,
+      "intlStudents": 28,
+      "femaleMaleRatio": "46:54",
+      "overallScore": 90.2
+    },
+    "tags": ["Research", "Economics", "Core Curriculum"],
+    "description": "The University of Chicago is a private research university in Chicago, Illinois. Its main campus is in the Hyde Park neighborhood on Chicago's South Side.",
+    "webAddress": "https://www.timeshighereducation.com/world-university-rankings/university-chicago"
+  },
+  "imperial": {
+    "name": "Imperial College London",
+    "location": "UK",
+    "city": "London",
+    "rank": 10,
+    "specialisedsubj": ["Life Sciences", "Clinical and Health", "Computer Science", "Engineering", "Physical Sciences"],
+    "minimumgpa": 3.5,
     "satsmin": null,
     "requiresToefl": false,
     "requiresIelts": true,
     "toeflMin": null,
-    "ieltsMin": 7.5,
+    "ieltsMin": 7.0,
     "averagescores": {
-      "gpa": 3.8,
+      "gpa": 3.7,
       "sats": null
     },
-    "tags": ["Collegiate", "Research", "Heritage"]
+    "stats": {
+      "students": 16760,
+      "studentStaffRatio": 11.6,
+      "intlStudents": 56,
+      "femaleMaleRatio": "38:62",
+      "overallScore": 89.8
+    },
+    "tags": ["STEM Excellence", "Research", "International"],
+    "description": "Imperial College London is a public research university in London, England. Its history began with Prince Albert's vision of a cultural area in South Kensington.",
+    "webAddress": "https://www.timeshighereducation.com/world-university-rankings/imperial-college-london"
+  },
+  "upenn": {
+    "name": "University of Pennsylvania",
+    "location": "US",
+    "city": "Philadelphia",
+    "rank": 11,
+    "specialisedsubj": ["Life Sciences", "Law", "Education", "Arts and Humanities", "Business and Economics", "Clinical and Health", "Computer Science", "Engineering", "Social Sciences", "Psychology", "Physical Sciences"],
+    "minimumgpa": 3.6,
+    "satsmin": 1480,
+    "requiresToefl": true,
+    "requiresIelts": true,
+    "toeflMin": 100,
+    "ieltsMin": 7.0,
+    "averagescores": {
+      "gpa": 3.85,
+      "sats": 1510
+    },
+    "stats": {
+      "students": 20578,
+      "studentStaffRatio": 6.5,
+      "intlStudents": 21,
+      "femaleMaleRatio": "52:48",
+      "overallScore": 89.6
+    },
+    "tags": ["Ivy League", "Business", "Wharton"],
+    "description": "The University of Pennsylvania is a private Ivy League research university in Philadelphia. Founded in 1740, it is one of nine colonial colleges chartered before the U.S. Declaration of Independence.",
+    "webAddress": "https://www.timeshighereducation.com/world-university-rankings/university-pennsylvania"
+  },
+  "jhu": {
+    "name": "Johns Hopkins University",
+    "location": "US",
+    "city": "Baltimore",
+    "rank": 12,
+    "specialisedsubj": ["Life Sciences", "Education", "Arts and Humanities", "Business and Economics", "Clinical and Health", "Computer Science", "Engineering", "Social Sciences", "Psychology", "Physical Sciences"],
+    "minimumgpa": 3.6,
+    "satsmin": 1480,
+    "requiresToefl": true,
+    "requiresIelts": true,
+    "toeflMin": 100,
+    "ieltsMin": 7.0,
+    "averagescores": {
+      "gpa": 3.85,
+      "sats": 1510
+    },
+    "stats": {
+      "students": 16171,
+      "studentStaffRatio": 4.5,
+      "intlStudents": 26,
+      "femaleMaleRatio": "52:48",
+      "overallScore": 89.2
+    },
+    "tags": ["Medical Research", "Innovation", "Research"],
+    "description": "Johns Hopkins University is a private research university in Baltimore, Maryland. Founded in 1876, it was the first American university based on the European research institution model.",
+    "webAddress": "https://www.timeshighereducation.com/world-university-rankings/johns-hopkins-university"
+  },
+  "berkeley": {
+    "name": "University of California, Berkeley",
+    "location": "US",
+    "city": "Berkeley",
+    "rank": 13,
+    "specialisedsubj": ["Life Sciences", "Law", "Education", "Arts and Humanities", "Business and Economics", "Clinical and Health", "Computer Science", "Engineering", "Social Sciences", "Psychology", "Physical Sciences"],
+    "minimumgpa": 3.5,
+    "satsmin": 1400,
+    "requiresToefl": true,
+    "requiresIelts": true,
+    "toeflMin": 90,
+    "ieltsMin": 7.0,
+    "averagescores": {
+      "gpa": 3.75,
+      "sats": 1450
+    },
+    "stats": {
+      "students": 41081,
+      "studentStaffRatio": 13.7,
+      "intlStudents": 17,
+      "femaleMaleRatio": "50:50",
+      "overallScore": 88.3
+    },
+    "tags": ["Public Ivy", "Research", "Innovation"],
+    "description": "The University of California, Berkeley is a public land-grant research university in Berkeley, California. Founded in 1868, it is the flagship institution of the UC system.",
+    "webAddress": "https://www.timeshighereducation.com/world-university-rankings/university-california-berkeley"
+  },
+  "eth": {
+    "name": "ETH Zurich",
+    "location": "CH",
+    "city": "Zurich",
+    "rank": 13,
+    "specialisedsubj": ["Life Sciences", "Arts and Humanities", "Business and Economics", "Clinical and Health", "Computer Science", "Engineering", "Social Sciences", "Physical Sciences"],
+    "minimumgpa": 3.5,
+    "satsmin": null,
+    "requiresToefl": false,
+    "requiresIelts": true,
+    "toeflMin": null,
+    "ieltsMin": 7.0,
+    "averagescores": {
+      "gpa": 3.7,
+      "sats": null
+    },
+    "stats": {
+      "students": 18956,
+      "studentStaffRatio": 12.5,
+      "intlStudents": 39,
+      "femaleMaleRatio": "32:68",
+      "overallScore": 88.3
+    },
+    "tags": ["STEM Excellence", "Research", "Engineering"],
+    "description": "ETH Zurich is a public research university in Zurich, Switzerland. Founded in 1854, it specializes in engineering, technology, and natural sciences.",
+    "webAddress": "https://www.timeshighereducation.com/world-university-rankings/eth-zurich"
+  },
+  "columbia": {
+    "name": "Columbia University",
+    "location": "US",
+    "city": "New York",
+    "rank": 16,
+    "specialisedsubj": ["Life Sciences", "Law", "Arts and Humanities", "Business and Economics", "Clinical and Health", "Computer Science", "Engineering", "Social Sciences", "Psychology", "Physical Sciences"],
+    "minimumgpa": 3.6,
+    "satsmin": 1490,
+    "requiresToefl": true,
+    "requiresIelts": true,
+    "toeflMin": 100,
+    "ieltsMin": 7.0,
+    "averagescores": {
+      "gpa": 3.85,
+      "sats": 1520
+    },
+    "stats": {
+      "students": 26586,
+      "studentStaffRatio": 5.8,
+      "intlStudents": 37,
+      "femaleMaleRatio": null,
+      "overallScore": 87.0
+    },
+    "tags": ["Ivy League", "NYC", "Core Curriculum"],
+    "description": "Columbia University is a private Ivy League research university in New York City. Established in 1754, it is the oldest institution of higher education in New York.",
+    "webAddress": "https://www.timeshighereducation.com/world-university-rankings/columbia-university"
+  },
+  "ucla": {
+    "name": "University of California, Los Angeles",
+    "location": "US",
+    "city": "Los Angeles",
+    "rank": 17,
+    "specialisedsubj": ["Life Sciences", "Law", "Education", "Arts and Humanities", "Business and Economics", "Clinical and Health", "Computer Science", "Engineering", "Social Sciences", "Psychology", "Physical Sciences"],
+    "minimumgpa": 3.5,
+    "satsmin": 1350,
+    "requiresToefl": true,
+    "requiresIelts": true,
+    "toeflMin": 100,
+    "ieltsMin": 7.0,
+    "averagescores": {
+      "gpa": 3.7,
+      "sats": 1400
+    },
+    "stats": {
+      "students": 41066,
+      "studentStaffRatio": 9.4,
+      "intlStudents": 17,
+      "femaleMaleRatio": "54:46",
+      "overallScore": 86.8
+    },
+    "tags": ["Public Ivy", "Film", "Athletics"],
+    "description": "The University of California, Los Angeles is a public land-grant research university in Los Angeles. Its academic roots were established in 1881.",
+    "webAddress": "https://www.timeshighereducation.com/world-university-rankings/university-california-los-angeles"
+  },
+  "toronto": {
+    "name": "University of Toronto",
+    "location": "CA",
+    "city": "Toronto",
+    "rank": 18,
+    "specialisedsubj": ["Life Sciences", "Law", "Education", "Arts and Humanities", "Business and Economics", "Clinical and Health", "Computer Science", "Engineering", "Social Sciences", "Psychology", "Physical Sciences"],
+    "minimumgpa": 3.3,
+    "satsmin": null,
+    "requiresToefl": true,
+    "requiresIelts": true,
+    "toeflMin": 100,
+    "ieltsMin": 6.5,
+    "averagescores": {
+      "gpa": 3.6,
+      "sats": null
+    },
+    "stats": {
+      "students": 73370,
+      "studentStaffRatio": 20.1,
+      "intlStudents": 21,
+      "femaleMaleRatio": "59:41",
+      "overallScore": 85.5
+    },
+    "tags": ["Research", "Diverse", "Large Campus"],
+    "description": "The University of Toronto is a public research university in Toronto, Ontario, Canada. Founded in 1827, it is Canada's leading institution.",
+    "webAddress": "https://www.timeshighereducation.com/world-university-rankings/university-toronto"
+  },
+  "cornell": {
+    "name": "Cornell University",
+    "location": "US",
+    "city": "Ithaca",
+    "rank": 19,
+    "specialisedsubj": ["Life Sciences", "Law", "Arts and Humanities", "Business and Economics", "Computer Science", "Engineering", "Social Sciences", "Psychology", "Physical Sciences"],
+    "minimumgpa": 3.6,
+    "satsmin": 1450,
+    "requiresToefl": true,
+    "requiresIelts": true,
+    "toeflMin": 100,
+    "ieltsMin": 7.0,
+    "averagescores": {
+      "gpa": 3.8,
+      "sats": 1480
+    },
+    "stats": {
+      "students": 22319,
+      "studentStaffRatio": 9.8,
+      "intlStudents": 25,
+      "femaleMaleRatio": "49:51",
+      "overallScore": 85.1
+    },
+    "tags": ["Ivy League", "Agriculture", "Engineering"],
+    "description": "Cornell University is a private Ivy League land-grant research university in Ithaca, New York. Founded in 1865, it has been co-educational and non-sectarian since its founding.",
+    "webAddress": "https://www.timeshighereducation.com/world-university-rankings/cornell-university"
+  },
+  "duke": {
+    "name": "Duke University",
+    "location": "US",
+    "city": "Durham",
+    "rank": 20,
+    "specialisedsubj": ["Life Sciences", "Law", "Arts and Humanities", "Business and Economics", "Clinical and Health", "Computer Science", "Engineering", "Social Sciences", "Psychology", "Physical Sciences"],
+    "minimumgpa": 3.6,
+    "satsmin": 1480,
+    "requiresToefl": true,
+    "requiresIelts": true,
+    "toeflMin": 100,
+    "ieltsMin": 7.0,
+    "averagescores": {
+      "gpa": 3.85,
+      "sats": 1510
+    },
+    "stats": {
+      "students": 15309,
+      "studentStaffRatio": 4.3,
+      "intlStudents": 19,
+      "femaleMaleRatio": "49:51",
+      "overallScore": 84.0
+    },
+    "tags": ["Research", "Medical", "Basketball"],
+    "description": "Duke University is a private research university in Durham, North Carolina. Founded in 1838, it moved to Durham in 1892 and was renamed in 1924.",
+    "webAddress": "https://www.timeshighereducation.com/world-university-rankings/duke-university"
+  },
+  "umich": {
+    "name": "University of Michigan-Ann Arbor",
+    "location": "US",
+    "city": "Ann Arbor",
+    "rank": 21,
+    "specialisedsubj": ["Life Sciences", "Law", "Education", "Arts and Humanities", "Business and Economics", "Clinical and Health", "Computer Science", "Engineering", "Social Sciences", "Psychology", "Physical Sciences"],
+    "minimumgpa": 3.5,
+    "satsmin": 1380,
+    "requiresToefl": true,
+    "requiresIelts": true,
+    "toeflMin": 100,
+    "ieltsMin": 7.0,
+    "averagescores": {
+      "gpa": 3.7,
+      "sats": 1420
+    },
+    "stats": {
+      "students": 42982,
+      "studentStaffRatio": 8.3,
+      "intlStudents": 17,
+      "femaleMaleRatio": "49:51",
+      "overallScore": 83.8
+    },
+    "tags": ["Public Ivy", "Research", "Athletics"],
+    "description": "The University of Michigan is a public research university in Ann Arbor, Michigan. Founded in 1817, it is one of the oldest universities in the United States.",
+    "webAddress": "https://www.timeshighereducation.com/world-university-rankings/university-michigan-ann-arbor"
+  },
+  "northwestern": {
+    "name": "Northwestern University",
+    "location": "US",
+    "city": "Evanston",
+    "rank": 22,
+    "specialisedsubj": ["Life Sciences", "Law", "Arts and Humanities", "Business and Economics", "Clinical and Health", "Computer Science", "Engineering", "Social Sciences", "Psychology", "Physical Sciences"],
+    "minimumgpa": 3.6,
+    "satsmin": 1460,
+    "requiresToefl": true,
+    "requiresIelts": true,
+    "toeflMin": 100,
+    "ieltsMin": 7.0,
+    "averagescores": {
+      "gpa": 3.8,
+      "sats": 1490
+    },
+    "stats": {
+      "students": 17951,
+      "studentStaffRatio": 12.8,
+      "intlStudents": 20,
+      "femaleMaleRatio": "49:51",
+      "overallScore": 83.5
+    },
+    "tags": ["Research", "Journalism", "Business"],
+    "description": "Northwestern University is a private research university in Evanston, Illinois. Established in 1851, it has its main campus along the shores of Lake Michigan.",
+    "webAddress": "https://www.timeshighereducation.com/world-university-rankings/northwestern-university"
+  },
+  "tsinghua": {
+    "name": "Tsinghua University",
+    "location": "CN",
+    "city": "Beijing",
+    "rank": 23,
+    "specialisedsubj": ["Life Sciences", "Law", "Education", "Arts and Humanities", "Business and Economics", "Clinical and Health", "Computer Science", "Engineering", "Social Sciences", "Physical Sciences"],
+    "minimumgpa": 3.5,
+    "satsmin": null,
+    "requiresToefl": true,
+    "requiresIelts": true,
+    "toeflMin": 80,
+    "ieltsMin": 6.0,
+    "averagescores": {
+      "gpa": 3.7,
+      "sats": null
+    },
+    "stats": {
+      "students": 38783,
+      "studentStaffRatio": 12.0,
+      "intlStudents": 11,
+      "femaleMaleRatio": "34:66",
+      "overallScore": 82.6
+    },
+    "tags": ["Engineering", "Technology", "Research"],
+    "description": "Tsinghua University is a public university in Beijing, China. Founded in 1911, it is one of China's most prestigious universities.",
+    "webAddress": "https://www.timeshighereducation.com/world-university-rankings/tsinghua-university"
+  },
+  "peking": {
+    "name": "Peking University",
+    "location": "CN",
+    "city": "Beijing",
+    "rank": 24,
+    "specialisedsubj": ["Life Sciences", "Education", "Arts and Humanities", "Business and Economics", "Clinical and Health", "Computer Science", "Engineering", "Social Sciences", "Psychology", "Physical Sciences"],
+    "minimumgpa": 3.5,
+    "satsmin": null,
+    "requiresToefl": true,
+    "requiresIelts": true,
+    "toeflMin": 80,
+    "ieltsMin": 6.0,
+    "averagescores": {
+      "gpa": 3.7,
+      "sats": null
+    },
+    "stats": {
+      "students": 39575,
+      "studentStaffRatio": 11.5,
+      "intlStudents": 15,
+      "femaleMaleRatio": "46:54",
+      "overallScore": 82.3
+    },
+    "tags": ["Comprehensive", "Research", "Historic"],
+    "description": "Peking University is a public university in Beijing, China. Founded in 1898, it is one of China's oldest and most prestigious institutions.",
+    "webAddress": "https://www.timeshighereducation.com/world-university-rankings/peking-university"
+  },
+  "nus": {
+    "name": "National University of Singapore",
+    "location": "SG",
+    "city": "Singapore",
+    "rank": 25,
+    "specialisedsubj": ["Life Sciences", "Law", "Arts and Humanities", "Business and Economics", "Clinical and Health", "Computer Science", "Engineering", "Social Sciences", "Psychology", "Physical Sciences"],
+    "minimumgpa": 3.3,
+    "satsmin": null,
+    "requiresToefl": true,
+    "requiresIelts": true,
+    "toeflMin": 92,
+    "ieltsMin": 6.5,
+    "averagescores": {
+      "gpa": 3.6,
+      "sats": null
+    },
+    "stats": {
+      "students": 30869,
+      "studentStaffRatio": 17.9,
+      "intlStudents": 28,
+      "femaleMaleRatio": "51:49",
+      "overallScore": 81.9
+    },
+    "tags": ["Asian Excellence", "Research", "Innovation"],
+    "description": "The National University of Singapore is a national public research university in Singapore. Established in 1980, it is Singapore's flagship university.",
+    "webAddress": "https://www.timeshighereducation.com/world-university-rankings/national-university-singapore"
+  },
+  "melbourne": {
+    "name": "University of Melbourne",
+    "location": "AU",
+    "city": "Melbourne",
+    "rank": 32,
+    "specialisedsubj": ["Life Sciences", "Law", "Education", "Arts and Humanities", "Business and Economics", "Clinical and Health", "Computer Science", "Engineering", "Social Sciences", "Psychology", "Physical Sciences"],
+    "minimumgpa": 3.0,
+    "satsmin": null,
+    "requiresToefl": true,
+    "requiresIelts": true,
+    "toeflMin": 79,
+    "ieltsMin": 6.5,
+    "averagescores": {
+      "gpa": 3.5,
+      "sats": null
+    },
+    "stats": {
+      "students": 47385,
+      "studentStaffRatio": 26.3,
+      "intlStudents": 46,
+      "femaleMaleRatio": "56:44",
+      "overallScore": 77.8
+    },
+    "tags": ["Clinical", "Studios", "Fellowships", "Group of Eight"],
+    "description": "The University of Melbourne is a public research university in Melbourne, Australia. Founded in 1853, it is Australia's second oldest university.",
+    "webAddress": "https://www.timeshighereducation.com/world-university-rankings/university-melbourne"
+  },
+  "ubc": {
+    "name": "University of British Columbia",
+    "location": "CA",
+    "city": "Vancouver",
+    "rank": 34,
+    "specialisedsubj": ["Life Sciences", "Law", "Education", "Arts and Humanities", "Business and Economics", "Clinical and Health", "Computer Science", "Engineering", "Social Sciences", "Psychology", "Physical Sciences"],
+    "minimumgpa": 3.3,
+    "satsmin": null,
+    "requiresToefl": true,
+    "requiresIelts": true,
+    "toeflMin": 90,
+    "ieltsMin": 6.5,
+    "averagescores": {
+      "gpa": 3.6,
+      "sats": null
+    },
+    "stats": {
+      "students": 52108,
+      "studentStaffRatio": 18.1,
+      "intlStudents": 32,
+      "femaleMaleRatio": "55:45",
+      "overallScore": 76.3
+    },
+    "tags": ["Sustainability", "Studios", "Internships", "Beautiful Campus"],
+    "description": "The University of British Columbia is a public research university with campuses in Vancouver and Kelowna, British Columbia, Canada.",
+    "webAddress": "https://www.timeshighereducation.com/world-university-rankings/university-british-columbia"
+  },
+  "tokyo": {
+    "name": "The University of Tokyo",
+    "location": "JP",
+    "city": "Tokyo",
+    "rank": 36,
+    "specialisedsubj": ["Life Sciences", "Education", "Arts and Humanities", "Business and Economics", "Clinical and Health", "Computer Science", "Engineering", "Social Sciences", "Psychology", "Physical Sciences"],
+    "minimumgpa": 3.2,
+    "satsmin": null,
+    "requiresToefl": true,
+    "requiresIelts": true,
+    "toeflMin": 80,
+    "ieltsMin": 6.0,
+    "averagescores": {
+      "gpa": 3.6,
+      "sats": null
+    },
+    "stats": {
+      "students": 25913,
+      "studentStaffRatio": 10.6,
+      "intlStudents": 12,
+      "femaleMaleRatio": null,
+      "overallScore": 75.7
+    },
+    "tags": ["AI", "Robotics", "Partnerships", "Historic"],
+    "description": "The University of Tokyo is a public research university in Tokyo, Japan. Founded in 1877, it is Japan's first modern university.",
+    "webAddress": "https://www.timeshighereducation.com/world-university-rankings/university-tokyo"
+  },
+  "kyoto": {
+    "name": "Kyoto University",
+    "location": "JP",
+    "city": "Kyoto",
+    "rank": 65,
+    "specialisedsubj": ["Life Sciences", "Education", "Arts and Humanities", "Business and Economics", "Clinical and Health", "Computer Science", "Engineering", "Social Sciences", "Psychology", "Physical Sciences"],
+    "minimumgpa": 3.2,
+    "satsmin": null,
+    "requiresToefl": true,
+    "requiresIelts": true,
+    "toeflMin": 80,
+    "ieltsMin": 6.0,
+    "averagescores": {
+      "gpa": 3.5,
+      "sats": null
+    },
+    "stats": {
+      "students": 22566,
+      "studentStaffRatio": 9.0,
+      "intlStudents": 9,
+      "femaleMaleRatio": "24:76",
+      "overallScore": 67.7
+    },
+    "tags": ["Research", "Nobel Laureates", "Traditional"],
+    "description": "Kyoto University is a national research university in Kyoto, Japan. Founded in 1897, it is one of the former Imperial Universities.",
+    "webAddress": "https://www.timeshighereducation.com/world-university-rankings/kyoto-university"
+  },
+  "seoul": {
+    "name": "Seoul National University",
+    "location": "KR",
+    "city": "Seoul",
+    "rank": 64,
+    "specialisedsubj": ["Life Sciences", "Education", "Arts and Humanities", "Business and Economics", "Clinical and Health", "Computer Science", "Engineering", "Social Sciences", "Physical Sciences"],
+    "minimumgpa": 3.3,
+    "satsmin": null,
+    "requiresToefl": true,
+    "requiresIelts": true,
+    "toeflMin": 80,
+    "ieltsMin": 6.0,
+    "averagescores": {
+      "gpa": 3.6,
+      "sats": null
+    },
+    "stats": {
+      "students": 26182,
+      "studentStaffRatio": 12.4,
+      "intlStudents": 12,
+      "femaleMaleRatio": null,
+      "overallScore": 68.0
+    },
+    "tags": ["SKY University", "Research", "Prestigious"],
+    "description": "Seoul National University is a public research university in Seoul, South Korea. It is one of the SKY universities and a flagship Korean National University.",
+    "webAddress": "https://www.timeshighereducation.com/world-university-rankings/seoul-national-university"
+  },
+  "helsinki": {
+    "name": "University of Helsinki",
+    "location": "FI",
+    "city": "Helsinki",
+    "rank": 96,
+    "specialisedsubj": ["Life Sciences", "Law", "Education", "Arts and Humanities", "Clinical and Health", "Computer Science", "Social Sciences", "Psychology", "Physical Sciences"],
+    "minimumgpa": 3.0,
+    "satsmin": null,
+    "requiresToefl": true,
+    "requiresIelts": true,
+    "toeflMin": 92,
+    "ieltsMin": 6.5,
+    "averagescores": {
+      "gpa": 3.5,
+      "sats": null
+    },
+    "stats": {
+      "students": 22072,
+      "studentStaffRatio": 16.6,
+      "intlStudents": 5,
+      "femaleMaleRatio": "66:34",
+      "overallScore": 62.3
+    },
+    "tags": ["Deep Tech", "Bio Labs", "Funding", "Nordic Excellence"],
+    "description": "The University of Helsinki is a public university in Helsinki, Finland. Founded in 1640, it is Finland's oldest and largest university.",
+    "webAddress": "https://www.timeshighereducation.com/world-university-rankings/university-helsinki"
+  },
+  "cape-town": {
+    "name": "University of Cape Town",
+    "location": "ZA",
+    "city": "Cape Town",
+    "rank": null,
+    "specialisedsubj": ["humanities", "business", "health"],
+    "minimumgpa": 3.0,
+    "satsmin": null,
+    "requiresToefl": true,
+    "requiresIelts": true,
+    "toeflMin": 80,
+    "ieltsMin": 6.5,
+    "averagescores": {
+      "gpa": 3.4,
+      "sats": null
+    },
+    "stats": {
+      "students": null,
+      "studentStaffRatio": null,
+      "intlStudents": null,
+      "femaleMaleRatio": null,
+      "overallScore": null
+    },
+    "tags": ["Leadership", "Fieldwork", "Community", "African Excellence"],
+    "description": "The University of Cape Town is a public research university in Cape Town, South Africa. Founded in 1829, it is the oldest university in South Africa.",
+    "webAddress": null
   }
 }
-

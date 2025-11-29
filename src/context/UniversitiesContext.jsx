@@ -11,7 +11,7 @@ export const UniversitiesProvider = ({ children }) => {
     return Object.entries(universitiesData).map(([id, data]) => ({
       id,
       name: data.name,
-      country: data.location,
+      country: data.location, // Country code (US, UK, CA, etc.)
       city: data.city,
       focus: data.specialisedsubj,
       tags: data.tags || [],
@@ -23,12 +23,25 @@ export const UniversitiesProvider = ({ children }) => {
       requiresIelts: data.requiresIelts ?? null,
       toeflMin: data.toeflMin ?? null,
       ieltsMin: data.ieltsMin ?? null,
+      // New fields
+      rank: data.rank ?? null,
+      stats: data.stats ?? null,
+      description: data.description ?? null,
+      webAddress: data.webAddress ?? null,
+      image_url: data.image_url ?? null,
     }));
   }, []);
 
   // Get a single university
   const getUniversity = (universityId) => {
-    return universities.find((uni) => uni.id === universityId);
+    const uni = universities.find((u) => u.id === universityId);
+    if (!uni) return null;
+    
+    // Return full data from JSON for detailed view
+    return {
+      ...uni,
+      ...universitiesData[universityId]
+    };
   };
 
   const value = useMemo(

@@ -25,10 +25,33 @@ const CodeModal = () => {
 
   const handleHaveCode = () => setStep('enter');
 
-  const handleNoCode = () => {
+  const handleNoCode = async () => {
     const newCode = generateCode(16);
     setGenerated(newCode);
     setStep('generated');
+    
+    // Create user in backend
+    try {
+      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+      const response = await fetch(`${API_BASE_URL}/user`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        console.log('✅ User created in backend:', data.key);
+        // Use the backend-generated key instead
+        setGenerated(data.key);
+      } else {
+        console.warn('⚠️ Backend not available, using client-generated code');
+      }
+    } catch (error) {
+      console.warn('⚠️ Could not create user in backend:', error.message);
+      // Continue with client-generated code
+    }
   };
 
   const handleConfirmExisting = (event) => {
