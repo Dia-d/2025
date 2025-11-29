@@ -6,6 +6,10 @@
     "specialisedsubj": ["law", "doctorate", "business", "health", "humanities"],
     "minimumgpa": 3.6,
     "satsmin": 1500,
+    "requiresToefl": true,
+    "requiresIelts": false,
+    "toeflMin": 100,
+    "ieltsMin": null,
     "averagescores": {
       "gpa": 3.9,
       "sats": 1520
@@ -19,6 +23,10 @@
     "specialisedsubj": ["engineering", "data", "Computer"],
     "minimumgpa": 3.5,
     "satsmin": 1500,
+    "requiresToefl": true,
+    "requiresIelts": false,
+    "toeflMin": 90,
+    "ieltsMin": null,
     "averagescores": {
       "gpa": 3.8,
       "sats": 1530
@@ -32,6 +40,10 @@
     "specialisedsubj": ["humanities", "health", "law"],
     "minimumgpa": 3.7,
     "satsmin": null,
+    "requiresToefl": false,
+    "requiresIelts": true,
+    "toeflMin": null,
+    "ieltsMin": 7.0,
     "averagescores": {
       "gpa": 3.8,
       "sats": null
@@ -110,6 +122,10 @@
     "specialisedsubj": ["engineering", "business", "Computer", "data"],
     "minimumgpa": 3.7,
     "satsmin": 1480,
+    "requiresToefl": true,
+    "requiresIelts": true,
+    "toeflMin": 100,
+    "ieltsMin": 7.0,
     "averagescores": {
       "gpa": 3.95,
       "sats": 1505
@@ -123,6 +139,10 @@
     "specialisedsubj": ["engineering", "humanities", "health", "law"],
     "minimumgpa": 3.7,
     "satsmin": null,
+    "requiresToefl": false,
+    "requiresIelts": true,
+    "toeflMin": null,
+    "ieltsMin": 7.5,
     "averagescores": {
       "gpa": 3.8,
       "sats": null
