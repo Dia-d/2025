@@ -1,0 +1,133 @@
+{
+  "harvard": {
+    "name": "Harvard University",
+    "location": "US",
+    "city": "Cambridge",
+    "specialisedsubj": ["law", "doctorate", "business", "health", "humanities"],
+    "minimumgpa": 3.6,
+    "satsmin": 1500,
+    "averagescores": {
+      "gpa": 3.9,
+      "sats": 1520
+    },
+    "tags": ["Ivy League", "Research", "Scholarships"]
+  },
+  "mit": {
+    "name": "Massachusetts Institute of Technology",
+    "location": "US",
+    "city": "Cambridge",
+    "specialisedsubj": ["engineering", "data", "Computer"],
+    "minimumgpa": 3.5,
+    "satsmin": 1500,
+    "averagescores": {
+      "gpa": 3.8,
+      "sats": 1530
+    },
+    "tags": ["Innovation", "Labs", "Scholarships"]
+  },
+  "oxford": {
+    "name": "University of Oxford",
+    "location": "GB",
+    "city": "Oxford",
+    "specialisedsubj": ["humanities", "health", "law"],
+    "minimumgpa": 3.7,
+    "satsmin": null,
+    "averagescores": {
+      "gpa": 3.8,
+      "sats": null
+    },
+    "tags": ["Collegiate", "Research", "Heritage"]
+  },
+  "melbourne": {
+    "name": "University of Melbourne",
+    "location": "AU",
+    "city": "Melbourne",
+    "specialisedsubj": ["health", "design", "business"],
+    "minimumgpa": 3.0,
+    "satsmin": null,
+    "averagescores": {
+      "gpa": 3.5,
+      "sats": null
+    },
+    "tags": ["Clinical", "Studios", "Fellowships"]
+  },
+  "tokyo": {
+    "name": "University of Tokyo",
+    "location": "JP",
+    "city": "Tokyo",
+    "specialisedsubj": ["engineering", "data", "Computer"],
+    "minimumgpa": 3.2,
+    "satsmin": null,
+    "averagescores": {
+      "gpa": 3.6,
+      "sats": null
+    },
+    "tags": ["AI", "Robotics", "Partnerships"]
+  },
+  "cape-town": {
+    "name": "University of Cape Town",
+    "location": "ZA",
+    "city": "Cape Town",
+    "specialisedsubj": ["humanities", "business", "health"],
+    "minimumgpa": 3.0,
+    "satsmin": null,
+    "averagescores": {
+      "gpa": 3.4,
+      "sats": null
+    },
+    "tags": ["Leadership", "Fieldwork", "Community"]
+  },
+  "ubc": {
+    "name": "University of British Columbia",
+    "location": "CA",
+    "city": "Vancouver",
+    "specialisedsubj": ["business", "design", "engineering"],
+    "minimumgpa": 3.3,
+    "satsmin": null,
+    "averagescores": {
+      "gpa": 3.6,
+      "sats": null
+    },
+    "tags": ["Sustainability", "Studios", "Internships"]
+  },
+  "helsinki": {
+    "name": "University of Helsinki",
+    "location": "FI",
+    "city": "Helsinki",
+    "specialisedsubj": ["data", "health", "Computer"],
+    "minimumgpa": 3.0,
+    "satsmin": null,
+    "averagescores": {
+      "gpa": 3.5,
+      "sats": null
+    },
+    "tags": ["Deep Tech", "Bio Labs", "Funding"]
+  },
+  "stanford": {
+    "name": "Stanford University",
+    "location": "US",
+    "city": "Stanford",
+    "specialisedsubj": ["engineering", "business", "Computer", "data"],
+    "minimumgpa": 3.7,
+    "satsmin": 1480,
+    "averagescores": {
+      "gpa": 3.95,
+      "sats": 1505
+    },
+    "tags": ["Silicon Valley", "Innovation", "Entrepreneurship"]
+  },
+  "cambridge": {
+    "name": "University of Cambridge",
+    "location": "GB",
+    "city": "Cambridge",
+    "specialisedsubj": ["engineering", "humanities", "health", "law"],
+    "minimumgpa": 3.7,
+    "satsmin": null,
+    "averagescores": {
+      "gpa": 3.8,
+      "sats": null
+    },
+    "tags": ["Collegiate", "Research", "Heritage"]
+  }
+}
+

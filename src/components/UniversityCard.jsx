@@ -22,6 +22,14 @@ const UniversityCard = ({ university, onClick }) => (
     </div>
     <footer>
       <small>Focus: {university.focus.join(' · ')}</small>
+      {(university.minimumgpa || university.satsmin) && (
+        <div style={{ marginTop: '0.5rem', fontSize: '0.85rem', color: '#666' }}>
+          {university.minimumgpa && (
+            <span style={{ marginRight: '1rem' }}>Min GPA: {university.minimumgpa}</span>
+          )}
+          {university.satsmin && <span>Min SAT: {university.satsmin}</span>}
+        </div>
+      )}
     </footer>
   </motion.article>
 );
