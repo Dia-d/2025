@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -7,12 +8,14 @@ const geoUrl =
 
 const WorldMap = ({ highlightCountries }) => {
   const navigate = useNavigate();
+  const [hoveredCountry, setHoveredCountry] = useState(null);
   
   const allHighlighted = highlightCountries?.all || [];
   const topCountry = highlightCountries?.top || null;
 
   const handleSelect = (code) => {
     if (code && code !== '-99' && code.length >= 2) {
+      console.log('Navigating to country:', code);
       navigate(`/universities/${code}`);
     }
   };
@@ -40,7 +43,7 @@ const WorldMap = ({ highlightCountries }) => {
                 const rawCode = geo.properties.ISO_A2 || geo.properties.ISO_A2_EH || geo.properties.ISO_A3;
                 
                 // Normalize code to uppercase for comparison (universities use uppercase codes like "US", "GB")
-                const code = rawCode ? rawCode.toUpperCase() : null;
+                const code = rawCode ? rawCode.toUpperCase().trim() : null;
                 
                 // Skip invalid codes but still render the geography
                 if (!code || code === '-99' || code.length < 2) {
@@ -61,11 +64,12 @@ const WorldMap = ({ highlightCountries }) => {
                 }
                 
                 // Normalize highlighted countries and top country for comparison
-                const normalizedHighlighted = allHighlighted.map(c => c?.toUpperCase());
-                const normalizedTopCountry = topCountry?.toUpperCase();
+                const normalizedHighlighted = allHighlighted.map(c => c?.toUpperCase?.() || c?.toString().toUpperCase() || '');
+                const normalizedTopCountry = topCountry?.toUpperCase?.() || topCountry?.toString().toUpperCase() || '';
                 
                 const isActive = normalizedHighlighted.includes(code);
                 const isTopCountry = code === normalizedTopCountry;
+                const isHovered = hoveredCountry === code;
                 
                 return (
                   <Geography
@@ -74,31 +78,47 @@ const WorldMap = ({ highlightCountries }) => {
                     onClick={() => {
                       handleSelect(code);
                     }}
+                    onMouseEnter={() => {
+                      setHoveredCountry(code);
+                    }}
+                    onMouseLeave={() => {
+                      setHoveredCountry(null);
+                    }}
                     style={{
                       default: {
-                        fill: isTopCountry 
-                          ? '#ffd18c' 
-                          : isActive 
-                            ? '#87f5d6' 
-                            : '#1f2937',
+                        fill: isHovered
+                          ? '#ffa7c3'
+                          : isTopCountry 
+                            ? '#ffd18c' 
+                            : isActive 
+                              ? '#87f5d6' 
+                              : '#1f2937',
                         outline: 'none',
-                        stroke: isTopCountry ? '#ffd18c' : '#111827',
-                        strokeWidth: isTopCountry ? 1.5 : 0.5,
+                        stroke: isHovered
+                          ? '#ffa7c3'
+                          : isTopCountry 
+                            ? '#ffd18c' 
+                            : '#111827',
+                        strokeWidth: isHovered || isTopCountry ? 1.5 : 0.5,
                         cursor: 'pointer',
+                        transition: 'all 0.2s ease',
+                        pointerEvents: 'all',
                       },
                       hover: {
                         fill: '#ffa7c3',
                         outline: 'none',
                         cursor: 'pointer',
                         stroke: '#ffa7c3',
-                        strokeWidth: 1,
+                        strokeWidth: 1.5,
+                        transition: 'all 0.2s ease',
                       },
                       pressed: {
                         fill: '#ffd18c',
                         outline: 'none',
                         cursor: 'pointer',
                         stroke: '#ffd18c',
-                        strokeWidth: 1.5,
+                        strokeWidth: 2,
+                        transition: 'all 0.1s ease',
                       },
                     }}
                   />

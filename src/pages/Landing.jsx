@@ -20,7 +20,9 @@ const Landing = () => {
     const countryCounts = {};
     matched.forEach((uni) => {
       const country = uni.country;
-      countryCounts[country] = (countryCounts[country] || 0) + 1;
+      if (country) {
+        countryCounts[country] = (countryCounts[country] || 0) + 1;
+      }
     });
     
     // Find country with most universities
@@ -29,8 +31,13 @@ const Landing = () => {
       [null, 0],
     )[0];
     
+    const allCountries = [...new Set(matched.map((uni) => uni.country).filter(Boolean))];
+    
+    // Debug logging
+    console.log('Highlight countries:', { all: allCountries, top: topCountry, activeSubjects });
+    
     return {
-      all: [...new Set(matched.map((uni) => uni.country))],
+      all: allCountries,
       top: topCountry,
     };
   }, [activeSubjects]);

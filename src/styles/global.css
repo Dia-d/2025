@@ -71,16 +71,75 @@ button {
   color: white;
 }
 
-.user-code-display {
-  padding: 0.5rem 1rem;
-  border-radius: 999px;
+.profile-container {
+  position: relative;
+}
+
+.profile-icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
   background: rgba(135, 245, 214, 0.1);
   color: var(--accent);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.profile-icon-button:hover {
+  background: rgba(135, 245, 214, 0.2);
+  border-color: var(--accent);
+  transform: scale(1.05);
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  min-width: 280px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+}
+
+.profile-dropdown-header {
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.profile-label {
   font-size: 0.875rem;
-  font-weight: 500;
-  font-family: 'Courier New', monospace;
+  color: var(--muted);
+  text-transform: uppercase;
   letter-spacing: 0.05em;
+  font-weight: 500;
+}
+
+.profile-dropdown-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.session-id {
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  color: var(--accent);
+  background: rgba(135, 245, 214, 0.1);
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
   border: 1px solid rgba(135, 245, 214, 0.2);
+  word-break: break-all;
+  text-align: center;
+  letter-spacing: 0.1em;
 }
 
 .cta-button {
@@ -251,6 +310,11 @@ button {
 .map-shell svg {
   width: 100%;
   height: 100%;
+  pointer-events: all;
+}
+
+.map-shell svg path {
+  pointer-events: all;
 }
 
 .map-legend {
