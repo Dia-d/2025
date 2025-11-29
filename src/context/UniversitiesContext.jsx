@@ -1,42 +1,14 @@
 import {
-  createContext, useContext, useEffect, useMemo, useState,
+  createContext, useContext, useMemo,
 } from 'react';
 import universitiesData from '../data/universities.json';
 
 const UniversitiesContext = createContext(null);
 
-const STORAGE_KEY = 'yonko_edited_universities';
-
-// Get edited universities from localStorage
-const getEditedUniversities = () => {
-  try {
-    const stored = window.localStorage.getItem(STORAGE_KEY);
-    return stored ? JSON.parse(stored) : {};
-  } catch {
-    return {};
-  }
-};
-
-// Save edited universities to localStorage
-const saveEditedUniversities = (edited) => {
-  try {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(edited));
-  } catch (error) {
-    console.error('Failed to save edited universities:', error);
-  }
-};
-
 export const UniversitiesProvider = ({ children }) => {
-  const [editedUniversities, setEditedUniversities] = useState({});
-
-  // Load edited universities on mount
-  useEffect(() => {
-    setEditedUniversities(getEditedUniversities());
-  }, []);
-
-  // Get all universities with edits applied
+  // Get all universities from JSON data (read-only)
   const universities = useMemo(() => {
-    const baseUniversities = Object.entries(universitiesData).map(([id, data]) => ({
+    return Object.entries(universitiesData).map(([id, data]) => ({
       id,
       name: data.name,
       country: data.location,
@@ -47,39 +19,12 @@ export const UniversitiesProvider = ({ children }) => {
       satsmin: data.satsmin,
       averagescores: data.averagescores,
       specialisedsubj: data.specialisedsubj,
-      // Add default values for new fields
       requiresToefl: data.requiresToefl ?? null,
       requiresIelts: data.requiresIelts ?? null,
       toeflMin: data.toeflMin ?? null,
       ieltsMin: data.ieltsMin ?? null,
     }));
-
-    // Apply edits
-    return baseUniversities.map((uni) => {
-      const edits = editedUniversities[uni.id];
-      if (!edits) return uni;
-
-      return {
-        ...uni,
-        ...edits,
-      };
-    });
-  }, [editedUniversities]);
-
-  // Update a university
-  const updateUniversity = (universityId, updates) => {
-    setEditedUniversities((prev) => {
-      const updated = {
-        ...prev,
-        [universityId]: {
-          ...prev[universityId],
-          ...updates,
-        },
-      };
-      saveEditedUniversities(updated);
-      return updated;
-    });
-  };
+  }, []);
 
   // Get a single university
   const getUniversity = (universityId) => {
@@ -89,7 +34,6 @@ export const UniversitiesProvider = ({ children }) => {
   const value = useMemo(
     () => ({
       universities,
-      updateUniversity,
       getUniversity,
     }),
     [universities],

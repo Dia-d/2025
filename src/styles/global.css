@@ -820,26 +820,6 @@ button {
   flex-shrink: 0;
 }
 
-/* Edit Button */
-.edit-button {
-  padding: 0.5rem;
-  border: 1px solid var(--border);
-  border-radius: 0.5rem;
-  background: rgba(135, 245, 214, 0.1);
-  color: var(--accent);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.edit-button:hover {
-  background: rgba(135, 245, 214, 0.2);
-  border-color: var(--accent);
-  transform: scale(1.05);
-}
-
 /* Modal Styles */
 .modal-overlay {
   position: fixed;
