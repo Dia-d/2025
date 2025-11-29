@@ -7,9 +7,14 @@ const geoUrl =
 
 const WorldMap = ({ highlightCountries }) => {
   const navigate = useNavigate();
+  
+  const allHighlighted = highlightCountries?.all || [];
+  const topCountry = highlightCountries?.top || null;
 
   const handleSelect = (code) => {
-    navigate(`/universities/${code}`);
+    if (code && code !== '-99' && code.length >= 2) {
+      navigate(`/universities/${code}`);
+    }
   };
 
   return (
@@ -24,7 +29,10 @@ const WorldMap = ({ highlightCountries }) => {
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
       >
-        <ComposableMap projectionConfig={{ scale: 160 }}>
+        <ComposableMap 
+          projectionConfig={{ scale: 160 }}
+          style={{ width: '100%', height: '100%' }}
+        >
           <Geographies geography={geoUrl}>
             {({ geographies }) =>
               geographies.map((geo) => {
@@ -49,28 +57,42 @@ const WorldMap = ({ highlightCountries }) => {
                   );
                 }
                 
-                const isActive = highlightCountries.includes(code);
+                const isActive = allHighlighted.includes(code);
+                const isTopCountry = code === topCountry;
+                
                 return (
                   <Geography
                     key={geo.rsmKey}
                     geography={geo}
-                    onClick={() => {
+                    onClick={(event) => {
+                      event?.preventDefault?.();
                       handleSelect(code);
+                    }}
+                    onMouseDown={(event) => {
+                      // Allow default behavior for better click handling
                     }}
                     style={{
                       default: {
-                        fill: isActive ? '#87f5d6' : '#1f2937',
+                        fill: isTopCountry 
+                          ? '#ffd18c' 
+                          : isActive 
+                            ? '#87f5d6' 
+                            : '#1f2937',
                         outline: 'none',
-                        stroke: '#111827',
-                        strokeWidth: 0.5,
+                        stroke: isTopCountry ? '#ffd18c' : '#111827',
+                        strokeWidth: isTopCountry ? 1.5 : 0.5,
+                        cursor: 'pointer',
+                        pointerEvents: 'all',
                       },
                       hover: {
                         fill: '#ffa7c3',
                         outline: 'none',
+                        cursor: 'pointer',
                       },
                       pressed: {
                         fill: '#ffd18c',
                         outline: 'none',
+                        cursor: 'pointer',
                       },
                     }}
                   />
@@ -81,9 +103,21 @@ const WorldMap = ({ highlightCountries }) => {
         </ComposableMap>
       </motion.div>
       <footer className="map-legend" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <span className="legend-dot hot" />
-          Universities align with your latest interests
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+          {topCountry && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <span className="legend-dot" style={{ background: '#ffd18c' }} />
+              <span style={{ fontSize: '0.9rem', color: 'var(--muted)' }}>
+                Top match: {topCountry}
+              </span>
+            </div>
+          )}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <span className="legend-dot hot" />
+            <span style={{ fontSize: '0.9rem', color: 'var(--muted)' }}>
+              Universities align with your latest interests
+            </span>
+          </div>
         </div>
         <button 
           className="ghost-button" 

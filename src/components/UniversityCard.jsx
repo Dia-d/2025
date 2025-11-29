@@ -1,12 +1,24 @@
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
-const UniversityCard = ({ university, onClick }) => (
-  <motion.article
-    className="university-card"
-    onClick={onClick}
-    whileHover={{ y: -4 }}
-    whileTap={{ scale: 0.98 }}
-  >
+const UniversityCard = ({ university, onClick }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    if (onClick) {
+      onClick();
+    } else {
+      navigate(`/roadmap/${university.id}`);
+    }
+  };
+
+  return (
+    <motion.article
+      className="university-card"
+      onClick={handleClick}
+      whileHover={{ y: -4 }}
+      whileTap={{ scale: 0.98 }}
+    >
     <header>
       <h3>{university.name}</h3>
       <p>
@@ -31,8 +43,9 @@ const UniversityCard = ({ university, onClick }) => (
         </div>
       )}
     </footer>
-  </motion.article>
-);
+    </motion.article>
+  );
+};
 
 export default UniversityCard;
 

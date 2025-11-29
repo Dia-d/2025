@@ -10,11 +10,29 @@ const Landing = () => {
   const [activeSubjects, setActiveSubjects] = useState([subjects[0].id]);
 
   const highlightCountries = useMemo(() => {
-    if (activeSubjects.length === 0) return [];
+    if (activeSubjects.length === 0) return { all: [], top: null };
+    
     const matched = universities.filter((uni) =>
       universityMatchesSubjects(uni.specialisedsubj || uni.focus, activeSubjects),
     );
-    return [...new Set(matched.map((uni) => uni.country))];
+    
+    // Count universities per country
+    const countryCounts = {};
+    matched.forEach((uni) => {
+      const country = uni.country;
+      countryCounts[country] = (countryCounts[country] || 0) + 1;
+    });
+    
+    // Find country with most universities
+    const topCountry = Object.entries(countryCounts).reduce(
+      (max, [country, count]) => (count > (max[1] || 0) ? [country, count] : max),
+      [null, 0],
+    )[0];
+    
+    return {
+      all: [...new Set(matched.map((uni) => uni.country))],
+      top: topCountry,
+    };
   }, [activeSubjects]);
 
   const toggleSubject = (subjectId) =>
