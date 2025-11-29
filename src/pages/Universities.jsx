@@ -4,6 +4,7 @@ import FiltersPanel from '../components/FiltersPanel.jsx';
 import UniversityList from '../components/UniversityList.jsx';
 import subjects from '../data/subjects.js';
 import universities from '../data/universities.js';
+import { universityMatchesSubjects } from '../data/subjectMapping.js';
 
 const Universities = () => {
   const { countryCode } = useParams();
@@ -17,7 +18,7 @@ const Universities = () => {
       .filter((uni) =>
         activeSubjects.length === 0
           ? true
-          : activeSubjects.every((subject) => uni.focus.includes(subject)),
+          : universityMatchesSubjects(uni.specialisedsubj || uni.focus, activeSubjects),
       )
       .filter((uni) => uni.name.toLowerCase().includes(search.toLowerCase()));
   }, [countryCode, activeSubjects, search]);

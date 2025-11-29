@@ -28,13 +28,23 @@ const WorldMap = ({ highlightCountries }) => {
           <Geographies geography={geoUrl}>
             {({ geographies }) =>
               geographies.map((geo) => {
-                const code = geo.properties.ISO_A2;
+                // Try multiple property names for country code (prioritize ISO_A2 for 2-letter codes)
+                const code = geo.properties.ISO_A2 || geo.properties.ISO_A2_EH || geo.properties.ISO_A3;
+                // Only render if we have a valid code
+                if (!code || code === '-99' || code.length < 2) return null;
+                
                 const isActive = highlightCountries.includes(code);
                 return (
                   <Geography
                     key={geo.rsmKey}
                     geography={geo}
-                    onClick={() => handleSelect(code)}
+                    onClick={() => {
+                      // Only navigate if we have a valid country code
+                      const validCode = geo.properties.ISO_A2 || geo.properties.ISO_A2_EH || geo.properties.ISO_A3;
+                      if (validCode && validCode !== '-99' && validCode.length >= 2) {
+                        handleSelect(validCode);
+                      }
+                    }}
                     style={{
                       default: {
                         fill: isActive ? '#87f5d6' : '#1f2937',
@@ -58,9 +68,18 @@ const WorldMap = ({ highlightCountries }) => {
           </Geographies>
         </ComposableMap>
       </motion.div>
-      <footer className="map-legend">
-        <span className="legend-dot hot" />
-        Universities align with your latest interests
+      <footer className="map-legend" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <span className="legend-dot hot" />
+          Universities align with your latest interests
+        </div>
+        <button 
+          className="ghost-button" 
+          type="button"
+          onClick={() => navigate('/universities/global')}
+        >
+          Skip to All Universities
+        </button>
       </footer>
     </section>
   );
