@@ -2,20 +2,21 @@ import { useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import FiltersPanel from '../components/FiltersPanel.jsx';
 import UniversityList from '../components/UniversityList.jsx';
-import universities from '../data/universities.js';
+import { useUniversities } from '../context/UniversitiesContext.jsx';
 
 const Universities = () => {
   const { countryCode } = useParams();
   const [activeSubjects, setActiveSubjects] = useState([]);
   const [search, setSearch] = useState('');
   const navigate = useNavigate();
+  const { universities } = useUniversities();
 
   // First filter by country only to get available subjects
   const countryFilteredUniversities = useMemo(() => {
     return universities.filter((uni) => 
       countryCode === 'global' ? true : uni.country === countryCode
     );
-  }, [countryCode]);
+  }, [countryCode, universities]);
 
   // Extract unique subjects from country-filtered universities (before subject filtering)
   const availableSubjects = useMemo(() => {

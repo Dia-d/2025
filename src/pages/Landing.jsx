@@ -3,11 +3,12 @@ import Hero from '../components/Hero.jsx';
 import SubjectGrid from '../components/SubjectGrid.jsx';
 import WorldMap from '../components/WorldMap.jsx';
 import subjects from '../data/subjects.js';
-import universities from '../data/universities.js';
+import { useUniversities } from '../context/UniversitiesContext.jsx';
 import { universityMatchesSubjects } from '../data/subjectMapping.js';
 
 const Landing = () => {
   const [activeSubjects, setActiveSubjects] = useState([subjects[0].id]);
+  const { universities } = useUniversities();
 
   const highlightCountries = useMemo(() => {
     if (activeSubjects.length === 0) return { all: [], top: null };
@@ -40,7 +41,7 @@ const Landing = () => {
       all: allCountries,
       top: topCountry,
     };
-  }, [activeSubjects]);
+  }, [activeSubjects, universities]);
 
   const toggleSubject = (subjectId) =>
     setActiveSubjects((prev) =>

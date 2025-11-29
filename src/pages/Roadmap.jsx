@@ -2,8 +2,8 @@ import { useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRoadmap } from '../context/RoadmapContext.jsx';
 import { useUserCode } from '../context/UserCodeContext.jsx';
+import { useUniversities } from '../context/UniversitiesContext.jsx';
 import RoadmapProgress from '../components/RoadmapProgress.jsx';
-import universities from '../data/universities.js';
 import {
   getAllRequirements,
   getGroupLabel,
@@ -15,6 +15,7 @@ const Roadmap = () => {
   const { universityId } = useParams();
   const navigate = useNavigate();
   const { code } = useUserCode();
+  const { getUniversity } = useUniversities();
   const {
     roadmapData,
     loading,
@@ -24,8 +25,8 @@ const Roadmap = () => {
   } = useRoadmap();
 
   const university = useMemo(
-    () => universities.find((uni) => uni.id === universityId),
-    [universityId],
+    () => getUniversity(universityId),
+    [universityId, getUniversity],
   );
 
   const countryCode = university?.country || null;

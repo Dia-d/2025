@@ -5,6 +5,7 @@ import App from './App.jsx';
 import './styles/global.css';
 import { UserCodeProvider } from './context/UserCodeContext.jsx';
 import { RoadmapProvider } from './context/RoadmapContext.jsx';
+import { UniversitiesProvider } from './context/UniversitiesContext.jsx';
 import ErrorBoundary from './components/ErrorBoundary.jsx';
 
 try {
@@ -18,9 +19,11 @@ try {
       <ErrorBoundary>
         <BrowserRouter>
           <UserCodeProvider>
-            <RoadmapProvider>
-              <App />
-            </RoadmapProvider>
+            <UniversitiesProvider>
+              <RoadmapProvider>
+                <App />
+              </RoadmapProvider>
+            </UniversitiesProvider>
           </UserCodeProvider>
         </BrowserRouter>
       </ErrorBoundary>
