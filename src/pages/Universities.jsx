@@ -2,9 +2,7 @@ import { useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import FiltersPanel from '../components/FiltersPanel.jsx';
 import UniversityList from '../components/UniversityList.jsx';
-import subjects from '../data/subjects.js';
 import universities from '../data/universities.js';
-import { universityMatchesSubjects } from '../data/subjectMapping.js';
 
 const Universities = () => {
   const { countryCode } = useParams();
@@ -12,26 +10,36 @@ const Universities = () => {
   const [search, setSearch] = useState('');
   const navigate = useNavigate();
 
-  const filteredUniversities = useMemo(() => {
-    return universities
-      .filter((uni) => (countryCode === 'global' ? true : uni.country === countryCode))
-      .filter((uni) =>
-        activeSubjects.length === 0
-          ? true
-          : universityMatchesSubjects(uni.specialisedsubj || uni.focus, activeSubjects),
-      )
-      .filter((uni) => uni.name.toLowerCase().includes(search.toLowerCase()));
-  }, [countryCode, activeSubjects, search]);
+  // First filter by country only to get available subjects
+  const countryFilteredUniversities = useMemo(() => {
+    return universities.filter((uni) => 
+      countryCode === 'global' ? true : uni.country === countryCode
+    );
+  }, [countryCode]);
 
-  // Extract unique subjects from filtered universities
+  // Extract unique subjects from country-filtered universities (before subject filtering)
   const availableSubjects = useMemo(() => {
     const subjectSet = new Set();
-    filteredUniversities.forEach((uni) => {
+    countryFilteredUniversities.forEach((uni) => {
       const uniSubjects = uni.specialisedsubj || uni.focus || [];
       uniSubjects.forEach((subj) => subjectSet.add(subj));
     });
     return Array.from(subjectSet).sort();
-  }, [filteredUniversities]);
+  }, [countryFilteredUniversities]);
+
+  // Now filter by subjects - directly check if university has the selected subject
+  const filteredUniversities = useMemo(() => {
+    return countryFilteredUniversities
+      .filter((uni) => {
+        if (activeSubjects.length === 0) return true;
+        const uniSubjects = uni.specialisedsubj || uni.focus || [];
+        // Check if university has at least one of the selected subjects
+        return activeSubjects.some((selectedSubj) => 
+          uniSubjects.includes(selectedSubj)
+        );
+      })
+      .filter((uni) => uni.name.toLowerCase().includes(search.toLowerCase()));
+  }, [countryFilteredUniversities, activeSubjects, search]);
 
   const toggleSubject = (subjectId) =>
     setActiveSubjects((prev) =>
