@@ -315,6 +315,7 @@ button {
 
 .map-shell svg path {
   pointer-events: all;
+  transition: fill 0.2s ease, stroke 0.2s ease;
 }
 
 .map-legend {

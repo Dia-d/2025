@@ -99,11 +99,60 @@ const WorldMap = ({ highlightCountries }) => {
                 const isTopCountry = code === normalizedTopCountry;
                 const isHovered = hoveredCountry === code;
 
-                // Debug specific countries
-                if (code === 'US' || code === 'GB' || code === 'AU') {
-                  console.log(`Country ${code}:`, {
+                // Determine fill color - prioritize hover, then top, then active
+                let fillColor = '#1f2937'; // default dark gray
+                let strokeColor = '#111827';
+                let strokeWidth = 0.5;
+
+                if (isHovered) {
+                  fillColor = '#ffa7c3'; // pink on hover
+                  strokeColor = '#ffa7c3';
+                  strokeWidth = 1.5;
+                } else if (isTopCountry) {
+                  fillColor = '#ffd18c'; // gold for top country
+                  strokeColor = '#ffd18c';
+                  strokeWidth = 1.5;
+                } else if (isActive) {
+                  fillColor = '#87f5d6'; // teal for active countries
+                  strokeColor = '#87f5d6';
+                  strokeWidth = 1;
+                }
+
+                // Force update fill color in the style object
+                const geographyStyle = {
+                  default: {
+                    fill: fillColor,
+                    outline: 'none',
+                    stroke: strokeColor,
+                    strokeWidth: strokeWidth,
+                    cursor: 'pointer',
+                    pointerEvents: 'all' as const,
+                  },
+                  hover: {
+                    fill: '#ffa7c3',
+                    outline: 'none',
+                    cursor: 'pointer',
+                    stroke: '#ffa7c3',
+                    strokeWidth: 1.5,
+                  },
+                  pressed: {
+                    fill: '#ffd18c',
+                    outline: 'none',
+                    cursor: 'pointer',
+                    stroke: '#ffd18c',
+                    strokeWidth: 2,
+                  },
+                };
+
+                // Debug all active countries
+                if (isActive || isTopCountry) {
+                  console.log(`🎨 Country ${code} styling:`, {
                     isActive,
                     isTopCountry,
+                    isHovered,
+                    fillColor,
+                    strokeColor,
+                    strokeWidth,
                     inHighlighted: normalizedHighlighted.includes(code),
                     normalizedHighlighted,
                   });
@@ -111,7 +160,7 @@ const WorldMap = ({ highlightCountries }) => {
                 
                 return (
                   <Geography
-                    key={geo.rsmKey}
+                    key={`${geo.rsmKey}-${isActive}-${isTopCountry}`}
                     geography={geo}
                     onClick={(event) => {
                       event.preventDefault();
@@ -124,43 +173,10 @@ const WorldMap = ({ highlightCountries }) => {
                     onMouseLeave={() => {
                       setHoveredCountry(null);
                     }}
-                    style={{
-                      default: {
-                        fill: isHovered
-                          ? '#ffa7c3'
-                          : isTopCountry 
-                            ? '#ffd18c' 
-                            : isActive 
-                              ? '#87f5d6' 
-                              : '#1f2937',
-                        outline: 'none',
-                        stroke: isHovered
-                          ? '#ffa7c3'
-                          : isTopCountry 
-                            ? '#ffd18c' 
-                            : '#111827',
-                        strokeWidth: isHovered || isTopCountry ? 1.5 : 0.5,
-                        cursor: 'pointer',
-                        transition: 'all 0.2s ease',
-                        pointerEvents: 'all',
-                      },
-                      hover: {
-                        fill: '#ffa7c3',
-                        outline: 'none',
-                        cursor: 'pointer',
-                        stroke: '#ffa7c3',
-                        strokeWidth: 1.5,
-                        transition: 'all 0.2s ease',
-                      },
-                      pressed: {
-                        fill: '#ffd18c',
-                        outline: 'none',
-                        cursor: 'pointer',
-                        stroke: '#ffd18c',
-                        strokeWidth: 2,
-                        transition: 'all 0.1s ease',
-                      },
-                    }}
+                    fill={fillColor}
+                    stroke={strokeColor}
+                    strokeWidth={strokeWidth}
+                    style={geographyStyle}
                   />
                 );
               });
