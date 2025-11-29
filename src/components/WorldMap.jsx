@@ -37,7 +37,10 @@ const WorldMap = ({ highlightCountries }) => {
             {({ geographies }) =>
               geographies.map((geo) => {
                 // Try multiple property names for country code (prioritize ISO_A2 for 2-letter codes)
-                const code = geo.properties.ISO_A2 || geo.properties.ISO_A2_EH || geo.properties.ISO_A3;
+                const rawCode = geo.properties.ISO_A2 || geo.properties.ISO_A2_EH || geo.properties.ISO_A3;
+                
+                // Normalize code to uppercase for comparison (universities use uppercase codes like "US", "GB")
+                const code = rawCode ? rawCode.toUpperCase() : null;
                 
                 // Skip invalid codes but still render the geography
                 if (!code || code === '-99' || code.length < 2) {
@@ -57,19 +60,19 @@ const WorldMap = ({ highlightCountries }) => {
                   );
                 }
                 
-                const isActive = allHighlighted.includes(code);
-                const isTopCountry = code === topCountry;
+                // Normalize highlighted countries and top country for comparison
+                const normalizedHighlighted = allHighlighted.map(c => c?.toUpperCase());
+                const normalizedTopCountry = topCountry?.toUpperCase();
+                
+                const isActive = normalizedHighlighted.includes(code);
+                const isTopCountry = code === normalizedTopCountry;
                 
                 return (
                   <Geography
                     key={geo.rsmKey}
                     geography={geo}
-                    onClick={(event) => {
-                      event?.preventDefault?.();
+                    onClick={() => {
                       handleSelect(code);
-                    }}
-                    onMouseDown={(event) => {
-                      // Allow default behavior for better click handling
                     }}
                     style={{
                       default: {
@@ -82,17 +85,20 @@ const WorldMap = ({ highlightCountries }) => {
                         stroke: isTopCountry ? '#ffd18c' : '#111827',
                         strokeWidth: isTopCountry ? 1.5 : 0.5,
                         cursor: 'pointer',
-                        pointerEvents: 'all',
                       },
                       hover: {
                         fill: '#ffa7c3',
                         outline: 'none',
                         cursor: 'pointer',
+                        stroke: '#ffa7c3',
+                        strokeWidth: 1,
                       },
                       pressed: {
                         fill: '#ffd18c',
                         outline: 'none',
                         cursor: 'pointer',
+                        stroke: '#ffd18c',
+                        strokeWidth: 1.5,
                       },
                     }}
                   />

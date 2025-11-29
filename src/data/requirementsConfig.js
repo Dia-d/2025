@@ -1,5 +1,37 @@
 // Requirements configuration system
 // Defines country-specific requirements with priorities, dependencies, groups, and scoring
+//
+// ============================================================================
+// HOW TO ADD COUNTRY-SPECIFIC REQUIREMENTS
+// ============================================================================
+// To add requirements for a new country:
+// 1. Add a new entry to the COUNTRY_REQUIREMENTS object below using the 
+//    country's ISO 2-letter code (e.g., "CA" for Canada, "DE" for Germany)
+// 2. Structure it the same way as "US" or "GB" examples below
+// 3. Use the REQUIREMENT_GROUPS constants to organize requirements
+// 4. Each requirement needs:
+//    - id: unique identifier (string)
+//    - label: display name (string)
+//    - description: detailed explanation (string)
+//    - priority: order number (integer, lower = earlier)
+//    - level: visual level in roadmap (integer)
+//    - dependencies: array of requirement IDs that must be completed first
+//    - score: points value (integer)
+//    - required: whether it's mandatory (boolean)
+// 5. If a country is not found, the DEFAULT requirements will be used
+//
+// Example structure:
+//   COUNTRY_REQUIREMENTS = {
+//     US: { ... },
+//     GB: { ... },
+//     CA: {  // <-- Add your new country here
+//       [REQUIREMENT_GROUPS.ACADEMIC]: [ ... ],
+//       [REQUIREMENT_GROUPS.LANGUAGE]: [ ... ],
+//       // etc.
+//     },
+//     DEFAULT: { ... }
+//   }
+// ============================================================================
 
 // Requirement groups
 export const REQUIREMENT_GROUPS = {
