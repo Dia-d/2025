@@ -231,6 +231,14 @@ button {
   overflow: hidden;
   border-radius: 1.25rem;
   border: 1px solid var(--border);
+  height: 500px;
+  width: 100%;
+  position: relative;
+}
+
+.map-shell svg {
+  width: 100%;
+  height: 100%;
 }
 
 .map-legend {
@@ -311,6 +319,7 @@ button {
 
 .university-list {
   display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1rem;
 }
 
@@ -319,6 +328,9 @@ button {
   border-radius: 1rem;
   padding: 1.25rem;
   background: rgba(255, 255, 255, 0.02);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
 
 .tag-row {

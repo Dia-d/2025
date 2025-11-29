@@ -27,43 +27,46 @@ const WorldMap = ({ highlightCountries }) => {
         <ComposableMap projectionConfig={{ scale: 160 }}>
           <Geographies geography={geoUrl}>
             {({ geographies }) =>
-              geographies.map((geo) => {
-                // Try multiple property names for country code (prioritize ISO_A2 for 2-letter codes)
-                const code = geo.properties.ISO_A2 || geo.properties.ISO_A2_EH || geo.properties.ISO_A3;
-                // Only render if we have a valid code
-                if (!code || code === '-99' || code.length < 2) return null;
-                
-                const isActive = highlightCountries.includes(code);
-                return (
-                  <Geography
-                    key={geo.rsmKey}
-                    geography={geo}
-                    onClick={() => {
-                      // Only navigate if we have a valid country code
-                      const validCode = geo.properties.ISO_A2 || geo.properties.ISO_A2_EH || geo.properties.ISO_A3;
-                      if (validCode && validCode !== '-99' && validCode.length >= 2) {
-                        handleSelect(validCode);
-                      }
-                    }}
-                    style={{
-                      default: {
-                        fill: isActive ? '#87f5d6' : '#1f2937',
-                        outline: 'none',
-                        stroke: '#111827',
-                        strokeWidth: 0.5,
-                      },
-                      hover: {
-                        fill: '#ffa7c3',
-                        outline: 'none',
-                      },
-                      pressed: {
-                        fill: '#ffd18c',
-                        outline: 'none',
-                      },
-                    }}
-                  />
-                );
-              })
+              geographies
+                .filter((geo) => {
+                  // Filter out invalid geographies
+                  const code = geo.properties.ISO_A2 || geo.properties.ISO_A2_EH || geo.properties.ISO_A3;
+                  return code && code !== '-99' && code.length >= 2;
+                })
+                .map((geo) => {
+                  // Try multiple property names for country code (prioritize ISO_A2 for 2-letter codes)
+                  const code = geo.properties.ISO_A2 || geo.properties.ISO_A2_EH || geo.properties.ISO_A3;
+                  const isActive = highlightCountries.includes(code);
+                  return (
+                    <Geography
+                      key={geo.rsmKey}
+                      geography={geo}
+                      onClick={() => {
+                        // Only navigate if we have a valid country code
+                        const validCode = geo.properties.ISO_A2 || geo.properties.ISO_A2_EH || geo.properties.ISO_A3;
+                        if (validCode && validCode !== '-99' && validCode.length >= 2) {
+                          handleSelect(validCode);
+                        }
+                      }}
+                      style={{
+                        default: {
+                          fill: isActive ? '#87f5d6' : '#1f2937',
+                          outline: 'none',
+                          stroke: '#111827',
+                          strokeWidth: 0.5,
+                        },
+                        hover: {
+                          fill: '#ffa7c3',
+                          outline: 'none',
+                        },
+                        pressed: {
+                          fill: '#ffd18c',
+                          outline: 'none',
+                        },
+                      }}
+                    />
+                  );
+                })
             }
           </Geographies>
         </ComposableMap>

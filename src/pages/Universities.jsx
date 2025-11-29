@@ -23,6 +23,16 @@ const Universities = () => {
       .filter((uni) => uni.name.toLowerCase().includes(search.toLowerCase()));
   }, [countryCode, activeSubjects, search]);
 
+  // Extract unique subjects from filtered universities
+  const availableSubjects = useMemo(() => {
+    const subjectSet = new Set();
+    filteredUniversities.forEach((uni) => {
+      const uniSubjects = uni.specialisedsubj || uni.focus || [];
+      uniSubjects.forEach((subj) => subjectSet.add(subj));
+    });
+    return Array.from(subjectSet).sort();
+  }, [filteredUniversities]);
+
   const toggleSubject = (subjectId) =>
     setActiveSubjects((prev) =>
       prev.includes(subjectId) ? prev.filter((id) => id !== subjectId) : [...prev, subjectId],
@@ -44,7 +54,7 @@ const Universities = () => {
       </div>
       <div className="universities-grid">
         <FiltersPanel
-          subjects={subjects}
+          subjects={availableSubjects.map((subj) => ({ id: subj, name: subj.charAt(0).toUpperCase() + subj.slice(1) }))}
           activeSubjects={activeSubjects}
           onToggle={toggleSubject}
           search={search}
