@@ -139,7 +139,7 @@ const WorldMap = ({ highlightCountries }) => {
                     stroke: strokeColor,
                     strokeWidth: strokeWidth,
                     cursor: 'pointer',
-                    pointerEvents: 'all' as const,
+                    pointerEvents: 'all',
                   },
                   hover: {
                     fill: '#ffa7c3',
