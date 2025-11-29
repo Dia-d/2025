@@ -463,6 +463,22 @@ button {
   gap: 1rem;
 }
 
+.roadmap-progress-bar {
+  width: 100%;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+}
+
+.roadmap-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), #8ad2ff);
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
 .progress-bar-wrapper {
   width: 100%;
   height: 12px;
@@ -610,5 +626,120 @@ button {
 .status-badge.pending {
   background: rgba(255, 255, 255, 0.05);
   color: var(--muted);
+}
+
+/* New Roadmap Group Styles */
+.roadmap-group {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 1.5rem;
+  padding: 2rem;
+}
+
+.roadmap-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.roadmap-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.02);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.roadmap-item:hover:not(.disabled) {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--accent);
+  transform: translateX(4px);
+}
+
+.roadmap-item.completed {
+  background: rgba(135, 245, 214, 0.08);
+  border-color: var(--accent);
+}
+
+.roadmap-item.disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.roadmap-item.disabled:hover {
+  transform: none;
+  border-color: var(--border);
+}
+
+.roadmap-item-checkbox {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--muted);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 0.25rem;
+  transition: all 0.2s ease;
+}
+
+.roadmap-item.completed .roadmap-item-checkbox {
+  background-color: var(--accent);
+  border-color: var(--accent);
+}
+
+.roadmap-item.disabled .roadmap-item-checkbox {
+  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.roadmap-item-checkbox svg {
+  color: #05080f;
+  width: 16px;
+  height: 16px;
+}
+
+.roadmap-item-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.roadmap-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.roadmap-item-header h4 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.roadmap-item-description {
+  margin: 0.25rem 0 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.roadmap-item-dependencies {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+}
+
+.roadmap-item-status {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
 }
 

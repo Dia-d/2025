@@ -2,6 +2,7 @@ import {
   createContext, useContext, useEffect, useMemo, useState,
 } from 'react';
 import { useUserCode } from './UserCodeContext.jsx';
+import { getAllRequirements, getTotalScore } from '../data/requirementsConfig.js';
 
 const RoadmapContext = createContext(null);
 
@@ -9,23 +10,21 @@ const STORAGE_KEY = 'yonko_roadmap_data';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api';
 
 // Initialize default roadmap data structure
-const getDefaultRoadmapData = (universityId = null) => ({
-  university_id: universityId,
-  visa_documents: {
-    passport_valid_6_months_beyond_stay: false,
-    'DS-160_confirmation_page': false,
-    visa_application_fee_receipt: false,
-    'SEVIS_I-901_fee_receipt': false,
-    'Form_I-20_signed': false,
-    passport_size_photo_US_visa_spec: false,
-    academic_transcripts_and_certificates: false,
-    standardized_test_scores_if_required: false,
-    proof_of_financial_support: false,
-    university_acceptance_letter: false,
-    visa_appointment_confirmation: false,
-    evidence_of_ties_to_home_country: false,
-  },
-});
+const getDefaultRoadmapData = (universityId = null, countryCode = null) => {
+  const requirements = getAllRequirements(countryCode);
+  const requirementsStatus = {};
+  
+  // Initialize all requirements as incomplete
+  requirements.forEach((req) => {
+    requirementsStatus[req.id] = false;
+  });
+  
+  return {
+    university_id: universityId,
+    country_code: countryCode,
+    requirements: requirementsStatus,
+  };
+};
 
 export const RoadmapProvider = ({ children }) => {
   const { code } = useUserCode();
@@ -125,27 +124,58 @@ export const RoadmapProvider = ({ children }) => {
   };
 
   // Initialize roadmap for a university
-  const initializeRoadmap = async (universityId) => {
+  const initializeRoadmap = async (universityId, countryCode) => {
     if (!code) return null;
 
-    const newData = getDefaultRoadmapData(universityId);
+    const newData = getDefaultRoadmapData(universityId, countryCode);
     await saveRoadmapData(newData);
     return newData;
   };
 
-  // Update a specific visa document status
-  const updateVisaDocument = async (documentKey, value) => {
+  // Update a specific requirement status
+  const updateRequirement = async (requirementId, value) => {
     if (!code || !roadmapData) return;
 
     const updatedData = {
       ...roadmapData,
-      visa_documents: {
-        ...roadmapData.visa_documents,
-        [documentKey]: value,
+      requirements: {
+        ...roadmapData.requirements,
+        [requirementId]: value,
       },
     };
 
     await saveRoadmapData(updatedData);
+  };
+
+  // Calculate weighted progress
+  const calculateProgress = (countryCode) => {
+    if (!roadmapData || !roadmapData.requirements) {
+      return { percentage: 0, score: 0, totalScore: 0, completedCount: 0, totalCount: 0 };
+    }
+    
+    const reqCountryCode = countryCode || roadmapData.country_code;
+    const requirements = getAllRequirements(reqCountryCode);
+    const totalScore = getTotalScore(reqCountryCode);
+    const completedRequirements = Object.entries(roadmapData.requirements)
+      .filter(([_, completed]) => completed)
+      .map(([id]) => id);
+    
+    let earnedScore = 0;
+    requirements.forEach((req) => {
+      if (completedRequirements.includes(req.id)) {
+        earnedScore += req.score;
+      }
+    });
+    
+    const percentage = totalScore > 0 ? (earnedScore / totalScore) * 100 : 0;
+    
+    return {
+      percentage: Math.round(percentage * 10) / 10, // Round to 1 decimal
+      score: earnedScore,
+      totalScore,
+      completedCount: completedRequirements.length,
+      totalCount: requirements.length,
+    };
   };
 
   // Update university
@@ -164,9 +194,10 @@ export const RoadmapProvider = ({ children }) => {
       roadmapData,
       loading,
       initializeRoadmap,
-      updateVisaDocument,
+      updateRequirement,
       updateUniversity,
       saveRoadmapData,
+      calculateProgress,
     }),
     [roadmapData, loading],
   );
