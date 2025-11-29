@@ -69,15 +69,17 @@ const WorldMap = ({ highlightCountries }) => {
                 : null;
 
               // Debug normalization
-              if (normalizedTopCountry) {
-                console.log('🔍 Normalized top country:', {
-                  original: topCountry,
-                  normalized: normalizedTopCountry,
-                  inHighlighted: normalizedHighlighted.includes(normalizedTopCountry),
-                  allHighlighted: normalizedHighlighted,
-                });
-              }
+              console.log('🔍 Map normalization:', {
+                originalTop: topCountry,
+                normalizedTop: normalizedTopCountry,
+                originalAll: allHighlighted,
+                normalizedAll: normalizedHighlighted,
+                topInAll: normalizedTopCountry ? normalizedHighlighted.includes(normalizedTopCountry) : false,
+              });
 
+              // Log all map country codes for debugging
+              const mapCountryCodes = new Set();
+              
               return geographies.map((geo) => {
                 // Try multiple property names for country code
                 const rawCode = geo.properties.ISO_A2 
@@ -87,6 +89,11 @@ const WorldMap = ({ highlightCountries }) => {
                 
                 // Normalize code to uppercase for comparison
                 const code = rawCode ? String(rawCode).toUpperCase().trim() : null;
+                
+                // Track country codes for debugging
+                if (code && code.length >= 2 && code !== '-99') {
+                  mapCountryCodes.add(code);
+                }
                 
                 // Skip invalid codes but still render the geography
                 if (!code || code === '-99' || code.length < 2) {
@@ -109,6 +116,20 @@ const WorldMap = ({ highlightCountries }) => {
                 const isActive = normalizedHighlighted.includes(code);
                 const isTopCountry = code === normalizedTopCountry;
                 const isHovered = hoveredCountry === code;
+                
+                // Log matching attempts for highlighted countries
+                if (normalizedHighlighted.length > 0 && (isActive || isTopCountry || normalizedHighlighted.some(h => code.includes(h) || h.includes(code)))) {
+                  console.log(`🔍 Checking country ${code}:`, {
+                    rawCode,
+                    normalizedCode: code,
+                    isActive,
+                    isTopCountry,
+                    inNormalizedHighlighted: normalizedHighlighted.includes(code),
+                    normalizedHighlighted,
+                    normalizedTopCountry,
+                    fillColor: isTopCountry ? '#ffd18c' : isActive ? '#87f5d6' : '#1f2937',
+                  });
+                }
 
                 // Determine fill color - prioritize hover, then top, then active
                 let fillColor = '#1f2937'; // default dark gray
@@ -131,7 +152,7 @@ const WorldMap = ({ highlightCountries }) => {
                   strokeWidth = 1;
                 }
 
-                // Force update fill color in the style object
+                // Create style object with explicit fill colors
                 const geographyStyle = {
                   default: {
                     fill: fillColor,
@@ -142,11 +163,11 @@ const WorldMap = ({ highlightCountries }) => {
                     pointerEvents: 'all',
                   },
                   hover: {
-                    fill: '#ffa7c3',
+                    fill: isTopCountry ? '#ffd18c' : '#ffa7c3', // Keep top country gold on hover
                     outline: 'none',
                     cursor: 'pointer',
-                    stroke: '#ffa7c3',
-                    strokeWidth: 1.5,
+                    stroke: isTopCountry ? '#ffd18c' : '#ffa7c3',
+                    strokeWidth: isTopCountry ? 2 : 1.5,
                   },
                   pressed: {
                     fill: '#ffd18c',
@@ -168,6 +189,7 @@ const WorldMap = ({ highlightCountries }) => {
                     strokeWidth,
                     normalizedTopCountry,
                     normalizedHighlighted,
+                    styleObject: geographyStyle,
                   });
                 } else if (isActive) {
                   console.log(`✨ Active country ${code} styling:`, {
@@ -175,12 +197,25 @@ const WorldMap = ({ highlightCountries }) => {
                     isTopCountry,
                     fillColor,
                     strokeColor,
+                    styleObject: geographyStyle,
+                  });
+                }
+                
+                // Test: Force US to be visible for debugging
+                if (code === 'US' && normalizedHighlighted.length > 0) {
+                  console.log(`🇺🇸 US country check:`, {
+                    code,
+                    isActive,
+                    isTopCountry,
+                    fillColor,
+                    normalizedHighlighted,
+                    normalizedTopCountry,
                   });
                 }
                 
                 return (
                   <Geography
-                    key={`${geo.rsmKey}-${isActive}-${isTopCountry}`}
+                    key={`${geo.rsmKey}-${isActive}-${isTopCountry}-${fillColor}`}
                     geography={geo}
                     onClick={(event) => {
                       event.preventDefault();
@@ -193,9 +228,6 @@ const WorldMap = ({ highlightCountries }) => {
                     onMouseLeave={() => {
                       setHoveredCountry(null);
                     }}
-                    fill={fillColor}
-                    stroke={strokeColor}
-                    strokeWidth={strokeWidth}
                     style={geographyStyle}
                   />
                 );
