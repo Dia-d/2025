@@ -30,35 +30,57 @@ const getDefaultRoadmapData = (universityId = null) => ({
 export const RoadmapProvider = ({ children }) => {
   const { code } = useUserCode();
   const [roadmapData, setRoadmapData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false); // Start as false, only set to true when actually loading
 
   // Load roadmap data from backend or localStorage
   useEffect(() => {
     const loadRoadmapData = async () => {
       if (!code) {
-        setLoading(false);
-        return;
+        return; // No code, no need to load
       }
 
+      setLoading(true);
+      
       try {
-        // Try to fetch from backend first
-        const response = await fetch(`${API_BASE_URL}/roadmap/${code}`);
-        if (response.ok) {
-          const data = await response.json();
-          setRoadmapData(data);
-        } else {
-          // Fallback to localStorage
-          const stored = window.localStorage.getItem(`${STORAGE_KEY}_${code}`);
+        // Try to fetch from backend first (with timeout to prevent hanging)
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 2000);
+        
+        try {
+          const response = await fetch(`${API_BASE_URL}/roadmap/${code}`, {
+            signal: controller.signal,
+          });
+          clearTimeout(timeoutId);
+          
+          if (response.ok) {
+            const data = await response.json();
+            setRoadmapData(data);
+            setLoading(false);
+            return;
+          }
+        } catch (fetchError) {
+          clearTimeout(timeoutId);
+          // Backend not available, continue to localStorage
+        }
+        
+        // Fallback to localStorage
+        try {
+          const stored = typeof window !== 'undefined' ? window.localStorage.getItem(`${STORAGE_KEY}_${code}`) : null;
           if (stored) {
             setRoadmapData(JSON.parse(stored));
           }
+        } catch (storageError) {
+          // localStorage not available or error
         }
       } catch (error) {
-        console.error('Error loading roadmap data:', error);
-        // Fallback to localStorage
-        const stored = window.localStorage.getItem(`${STORAGE_KEY}_${code}`);
-        if (stored) {
-          setRoadmapData(JSON.parse(stored));
+        // Silently handle all errors
+        try {
+          const stored = typeof window !== 'undefined' ? window.localStorage.getItem(`${STORAGE_KEY}_${code}`) : null;
+          if (stored) {
+            setRoadmapData(JSON.parse(stored));
+          }
+        } catch (parseError) {
+          // Invalid stored data, ignore
         }
       } finally {
         setLoading(false);
@@ -75,21 +97,31 @@ export const RoadmapProvider = ({ children }) => {
     setRoadmapData(data);
 
     // Save to localStorage immediately
-    window.localStorage.setItem(`${STORAGE_KEY}_${code}`, JSON.stringify(data));
-
-    // Try to save to backend
     try {
-      await fetch(`${API_BASE_URL}/roadmap/${code}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
+      if (typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.setItem(`${STORAGE_KEY}_${code}`, JSON.stringify(data));
+      }
     } catch (error) {
-      console.error('Error saving roadmap data to backend:', error);
-      // Data is already saved to localStorage, so it's okay
+      // Silently handle localStorage errors
     }
+
+    // Try to save to backend (non-blocking with timeout)
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 2000);
+    
+    fetch(`${API_BASE_URL}/roadmap/${code}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+      signal: controller.signal,
+    })
+      .then(() => clearTimeout(timeoutId))
+      .catch(() => {
+        clearTimeout(timeoutId);
+        // Silently fail - data is already in localStorage
+      });
   };
 
   // Initialize roadmap for a university
