@@ -27,17 +27,20 @@ const Landing = () => {
     });
     
     // Find country with most universities
-    const topCountry = Object.entries(countryCounts).reduce(
+    const topCountryEntry = Object.entries(countryCounts).reduce(
       (max, [country, count]) => (count > (max[1] || 0) ? [country, count] : max),
       [null, 0],
-    )[0];
+    );
     
+    const topCountry = topCountryEntry[1] > 0 ? topCountryEntry[0] : null;
     const allCountries = [...new Set(matched.map((uni) => uni.country).filter(Boolean))];
     
     // Debug logging
-    console.log('Landing - Highlight countries calculation:', { 
+    console.log('🎯 Landing - Highlight countries calculation:', { 
       all: allCountries, 
-      top: topCountry, 
+      top: topCountry,
+      topCount: topCountryEntry[1],
+      countryCounts,
       activeSubjects,
       matchedCount: matched.length,
       universitiesCount: universities.length,
@@ -45,7 +48,7 @@ const Landing = () => {
     
     // Log sample universities to verify country codes
     if (matched.length > 0) {
-      console.log('Sample matched universities:', matched.slice(0, 3).map(u => ({
+      console.log('📊 Sample matched universities:', matched.slice(0, 3).map(u => ({
         name: u.name,
         country: u.country,
         subjects: u.specialisedsubj || u.focus,

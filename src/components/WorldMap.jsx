@@ -16,10 +16,11 @@ const WorldMap = ({ highlightCountries }) => {
 
   // Debug logging
   useEffect(() => {
-    console.log('WorldMap - Highlight countries:', {
+    console.log('🗺️ WorldMap - Received highlight countries:', {
       all: allHighlighted,
       top: topCountry,
       count: allHighlighted.length,
+      topInAll: topCountry ? allHighlighted.includes(topCountry) : false,
     });
   }, [allHighlighted, topCountry]);
 
@@ -67,6 +68,16 @@ const WorldMap = ({ highlightCountries }) => {
                 ? String(topCountry).toUpperCase().trim() 
                 : null;
 
+              // Debug normalization
+              if (normalizedTopCountry) {
+                console.log('🔍 Normalized top country:', {
+                  original: topCountry,
+                  normalized: normalizedTopCountry,
+                  inHighlighted: normalizedHighlighted.includes(normalizedTopCountry),
+                  allHighlighted: normalizedHighlighted,
+                });
+              }
+
               return geographies.map((geo) => {
                 // Try multiple property names for country code
                 const rawCode = geo.properties.ISO_A2 
@@ -104,14 +115,16 @@ const WorldMap = ({ highlightCountries }) => {
                 let strokeColor = '#111827';
                 let strokeWidth = 0.5;
 
-                if (isHovered) {
+                if (isHovered && !isTopCountry) {
+                  // Hover takes priority unless it's the top country
                   fillColor = '#ffa7c3'; // pink on hover
                   strokeColor = '#ffa7c3';
                   strokeWidth = 1.5;
                 } else if (isTopCountry) {
+                  // Top country gets gold highlight (most prominent)
                   fillColor = '#ffd18c'; // gold for top country
                   strokeColor = '#ffd18c';
-                  strokeWidth = 1.5;
+                  strokeWidth = 2; // Thicker stroke for visibility
                 } else if (isActive) {
                   fillColor = '#87f5d6'; // teal for active countries
                   strokeColor = '#87f5d6';
@@ -144,17 +157,24 @@ const WorldMap = ({ highlightCountries }) => {
                   },
                 };
 
-                // Debug all active countries
-                if (isActive || isTopCountry) {
-                  console.log(`🎨 Country ${code} styling:`, {
+                // Debug top country and active countries
+                if (isTopCountry) {
+                  console.log(`⭐ TOP COUNTRY ${code} styling:`, {
                     isActive,
                     isTopCountry,
                     isHovered,
                     fillColor,
                     strokeColor,
                     strokeWidth,
-                    inHighlighted: normalizedHighlighted.includes(code),
+                    normalizedTopCountry,
                     normalizedHighlighted,
+                  });
+                } else if (isActive) {
+                  console.log(`✨ Active country ${code} styling:`, {
+                    isActive,
+                    isTopCountry,
+                    fillColor,
+                    strokeColor,
                   });
                 }
                 
