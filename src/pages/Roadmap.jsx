@@ -23,6 +23,7 @@ const Roadmap = () => {
   const [hasShownCompletion, setHasShownCompletion] = useState(false);
   const [showAutoCompleteNotification, setShowAutoCompleteNotification] = useState(false);
   const [autoCompletedItems, setAutoCompletedItems] = useState([]);
+  const [hasShownAutoComplete, setHasShownAutoComplete] = useState(false);
   const { universityId } = useParams();
   const navigate = useNavigate();
   const { code } = useUserCode();
@@ -89,9 +90,9 @@ const Roadmap = () => {
     }
   }, [progress.percentage, hasShownCompletion, roadmapData]);
 
-  // Check for auto-completed requirements and show notification
+  // Check for auto-completed requirements and show notification (only once)
   useEffect(() => {
-    if (roadmapData && roadmapData.autoCompleted && roadmapData.autoCompleted.length > 0) {
+    if (!hasShownAutoComplete && roadmapData && roadmapData.autoCompleted && roadmapData.autoCompleted.length > 0) {
       const autoCompletedLabels = roadmapData.autoCompleted
         .map(reqId => {
           const req = requirements.find(r => r.id === reqId);
@@ -102,6 +103,7 @@ const Roadmap = () => {
       if (autoCompletedLabels.length > 0) {
         setAutoCompletedItems(autoCompletedLabels);
         setShowAutoCompleteNotification(true);
+        setHasShownAutoComplete(true);
         
         // Clear the autoCompleted flag so notification doesn't show again
         const updatedData = { ...roadmapData };
@@ -109,7 +111,7 @@ const Roadmap = () => {
         // Note: We don't save this back to avoid unnecessary saves
       }
     }
-  }, [roadmapData, requirements]);
+  }, [roadmapData, requirements, hasShownAutoComplete]);
 
   // Early returns after all hooks
   if (loading || !roadmapData) {
