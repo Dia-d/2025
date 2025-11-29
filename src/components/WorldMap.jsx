@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -9,14 +9,26 @@ const geoUrl =
 const WorldMap = ({ highlightCountries }) => {
   const navigate = useNavigate();
   const [hoveredCountry, setHoveredCountry] = useState(null);
+  const [mapError, setMapError] = useState(null);
   
   const allHighlighted = highlightCountries?.all || [];
   const topCountry = highlightCountries?.top || null;
+
+  // Debug logging
+  useEffect(() => {
+    console.log('WorldMap - Highlight countries:', {
+      all: allHighlighted,
+      top: topCountry,
+      count: allHighlighted.length,
+    });
+  }, [allHighlighted, topCountry]);
 
   const handleSelect = (code) => {
     if (code && code !== '-99' && code.length >= 2) {
       console.log('Navigating to country:', code);
       navigate(`/universities/${code}`);
+    } else {
+      console.warn('Invalid country code:', code);
     }
   };
 
@@ -31,19 +43,39 @@ const WorldMap = ({ highlightCountries }) => {
         className="map-shell"
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
+        style={{ position: 'relative' }}
       >
         <ComposableMap 
           projectionConfig={{ scale: 160 }}
           style={{ width: '100%', height: '100%' }}
         >
           <Geographies geography={geoUrl}>
-            {({ geographies }) =>
-              geographies.map((geo) => {
-                // Try multiple property names for country code (prioritize ISO_A2 for 2-letter codes)
-                const rawCode = geo.properties.ISO_A2 || geo.properties.ISO_A2_EH || geo.properties.ISO_A3;
+            {({ geographies }) => {
+              if (!geographies || geographies.length === 0) {
+                return (
+                  <text x="50%" y="50%" textAnchor="middle" fill="var(--muted)">
+                    Loading map...
+                  </text>
+                );
+              }
+
+              // Normalize highlighted countries once
+              const normalizedHighlighted = allHighlighted
+                .filter(Boolean)
+                .map(c => String(c).toUpperCase().trim());
+              const normalizedTopCountry = topCountry 
+                ? String(topCountry).toUpperCase().trim() 
+                : null;
+
+              return geographies.map((geo) => {
+                // Try multiple property names for country code
+                const rawCode = geo.properties.ISO_A2 
+                  || geo.properties.ISO_A2_EH 
+                  || geo.properties.ISO_A3
+                  || geo.properties.NAME;
                 
-                // Normalize code to uppercase for comparison (universities use uppercase codes like "US", "GB")
-                const code = rawCode ? rawCode.toUpperCase().trim() : null;
+                // Normalize code to uppercase for comparison
+                const code = rawCode ? String(rawCode).toUpperCase().trim() : null;
                 
                 // Skip invalid codes but still render the geography
                 if (!code || code === '-99' || code.length < 2) {
@@ -63,19 +95,27 @@ const WorldMap = ({ highlightCountries }) => {
                   );
                 }
                 
-                // Normalize highlighted countries and top country for comparison
-                const normalizedHighlighted = allHighlighted.map(c => c?.toUpperCase?.() || c?.toString().toUpperCase() || '');
-                const normalizedTopCountry = topCountry?.toUpperCase?.() || topCountry?.toString().toUpperCase() || '';
-                
                 const isActive = normalizedHighlighted.includes(code);
                 const isTopCountry = code === normalizedTopCountry;
                 const isHovered = hoveredCountry === code;
+
+                // Debug specific countries
+                if (code === 'US' || code === 'GB' || code === 'AU') {
+                  console.log(`Country ${code}:`, {
+                    isActive,
+                    isTopCountry,
+                    inHighlighted: normalizedHighlighted.includes(code),
+                    normalizedHighlighted,
+                  });
+                }
                 
                 return (
                   <Geography
                     key={geo.rsmKey}
                     geography={geo}
-                    onClick={() => {
+                    onClick={(event) => {
+                      event.preventDefault();
+                      event.stopPropagation();
                       handleSelect(code);
                     }}
                     onMouseEnter={() => {
@@ -123,10 +163,25 @@ const WorldMap = ({ highlightCountries }) => {
                     }}
                   />
                 );
-              })
-            }
+              });
+            }}
           </Geographies>
         </ComposableMap>
+        {mapError && (
+          <div style={{ 
+            position: 'absolute', 
+            top: '50%', 
+            left: '50%', 
+            transform: 'translate(-50%, -50%)',
+            color: '#ef4444',
+            textAlign: 'center',
+            padding: '1rem',
+            background: 'rgba(0, 0, 0, 0.8)',
+            borderRadius: '0.5rem',
+          }}>
+            {mapError}
+          </div>
+        )}
       </motion.div>
       <footer className="map-legend" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>

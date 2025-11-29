@@ -35,7 +35,22 @@ const Landing = () => {
     const allCountries = [...new Set(matched.map((uni) => uni.country).filter(Boolean))];
     
     // Debug logging
-    console.log('Highlight countries:', { all: allCountries, top: topCountry, activeSubjects });
+    console.log('Landing - Highlight countries calculation:', { 
+      all: allCountries, 
+      top: topCountry, 
+      activeSubjects,
+      matchedCount: matched.length,
+      universitiesCount: universities.length,
+    });
+    
+    // Log sample universities to verify country codes
+    if (matched.length > 0) {
+      console.log('Sample matched universities:', matched.slice(0, 3).map(u => ({
+        name: u.name,
+        country: u.country,
+        subjects: u.specialisedsubj || u.focus,
+      })));
+    }
     
     return {
       all: allCountries,
