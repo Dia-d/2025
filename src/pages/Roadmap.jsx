@@ -236,6 +236,66 @@ const Roadmap = () => {
             Track your progress for {university.name} in {university.city},{' '}
             {university.country}. Complete requirements in order.
           </p>
+          
+          {/* University-specific requirements */}
+          <div style={{
+            marginTop: '1rem',
+            padding: '1rem',
+            background: 'rgba(135, 245, 214, 0.08)',
+            border: '1px solid rgba(135, 245, 214, 0.2)',
+            borderRadius: '0.75rem',
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: '1rem',
+            fontSize: '0.9rem'
+          }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+              <span style={{ color: 'var(--muted)', fontSize: '0.8rem' }}>Minimum GPA</span>
+              <strong style={{ color: 'var(--accent)' }}>{university.minimumgpa || 'N/A'}</strong>
+            </div>
+            
+            {university.satsmin && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                <span style={{ color: 'var(--muted)', fontSize: '0.8rem' }}>SAT Minimum</span>
+                <strong style={{ color: 'var(--accent)' }}>{university.satsmin}</strong>
+              </div>
+            )}
+            
+            {university.requiresToefl && university.toeflMin && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                <span style={{ color: 'var(--muted)', fontSize: '0.8rem' }}>TOEFL Minimum</span>
+                <strong style={{ color: 'var(--accent)' }}>{university.toeflMin}</strong>
+              </div>
+            )}
+            
+            {university.requiresIelts && university.ieltsMin && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                <span style={{ color: 'var(--muted)', fontSize: '0.8rem' }}>IELTS Minimum</span>
+                <strong style={{ color: 'var(--accent)' }}>{university.ieltsMin}</strong>
+              </div>
+            )}
+            
+            {university.stats && (
+              <>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                  <span style={{ color: 'var(--muted)', fontSize: '0.8rem' }}>Students</span>
+                  <strong style={{ color: 'var(--accent)' }}>{university.stats.students?.toLocaleString()}</strong>
+                </div>
+                
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                  <span style={{ color: 'var(--muted)', fontSize: '0.8rem' }}>Student:Staff Ratio</span>
+                  <strong style={{ color: 'var(--accent)' }}>{university.stats.studentStaffRatio}</strong>
+                </div>
+                
+                {university.stats.intlStudents && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+                    <span style={{ color: 'var(--muted)', fontSize: '0.8rem' }}>International %</span>
+                    <strong style={{ color: 'var(--accent)' }}>{university.stats.intlStudents}%</strong>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
         </div>
       </div>
 
@@ -261,6 +321,39 @@ const Roadmap = () => {
             <span>Score: {progress.score} / {progress.totalScore} points</span>
             <span>{progress.percentage.toFixed(1)}% Complete</span>
           </div>
+          
+          {/* Further Progress Button */}
+          <button
+            onClick={() => navigate(`/further-progress/${universityId}`)}
+            style={{
+              marginTop: '1.5rem',
+              width: '100%',
+              padding: '0.85rem 1.5rem',
+              borderRadius: '0.75rem',
+              border: '1px solid var(--accent)',
+              background: 'rgba(135, 245, 214, 0.1)',
+              color: 'var(--accent)',
+              fontSize: '1rem',
+              fontWeight: '600',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.5rem'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.background = 'rgba(135, 245, 214, 0.2)';
+              e.target.style.transform = 'translateY(-2px)';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.background = 'rgba(135, 245, 214, 0.1)';
+              e.target.style.transform = 'translateY(0)';
+            }}
+          >
+            <span>🚀</span>
+            <span>Further Your Progress - ECA & Skills</span>
+          </button>
         </div>
 
         {/* Page Indicator */}

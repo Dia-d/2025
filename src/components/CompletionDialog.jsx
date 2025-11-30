@@ -1,12 +1,18 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const CompletionDialog = ({ isOpen, onClose, universityName }) => {
   const navigate = useNavigate();
+  const { universityId } = useParams();
 
   const handleExploreMore = () => {
     onClose();
     navigate('/universities/global');
+  };
+
+  const handleFurtherProgress = () => {
+    onClose();
+    navigate(`/further-progress/${universityId}`);
   };
 
   return (
@@ -60,7 +66,7 @@ const CompletionDialog = ({ isOpen, onClose, universityName }) => {
               marginBottom: '2rem'
             }}>
               You're all set for <strong style={{ color: 'var(--accent)' }}>{universityName}</strong>! 
-              All requirements have been completed. Maybe try for other universities?
+              All requirements have been completed. Want to further your progress?
             </p>
 
             {/* Actions */}
@@ -71,7 +77,7 @@ const CompletionDialog = ({ isOpen, onClose, universityName }) => {
               flexWrap: 'wrap'
             }}>
               <button
-                onClick={handleExploreMore}
+                onClick={handleFurtherProgress}
                 style={{
                   padding: '0.75rem 2rem',
                   borderRadius: '0.75rem',
@@ -92,18 +98,18 @@ const CompletionDialog = ({ isOpen, onClose, universityName }) => {
                   e.target.style.boxShadow = 'none';
                 }}
               >
-                Explore More Universities
+                Further Your Progress 🚀
               </button>
 
               <button
-                onClick={onClose}
+                onClick={handleExploreMore}
                 className="ghost-button"
                 style={{
                   padding: '0.75rem 2rem',
                   fontSize: '1rem'
                 }}
               >
-                Stay Here
+                Explore More Universities
               </button>
             </div>
 
