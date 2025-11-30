@@ -7,6 +7,7 @@ import RoadmapProgress from '../components/RoadmapProgress.jsx';
 import ConfirmDialog from '../components/ConfirmDialog.jsx';
 import CompletionDialog from '../components/CompletionDialog.jsx';
 import AutoCompleteNotification from '../components/AutoCompleteNotification.jsx';
+import ScoreInputDialog from '../components/ScoreInputDialog.jsx';
 import {
   getAllRequirements,
   getGroupLabel,
@@ -18,6 +19,8 @@ const Roadmap = () => {
   // All hooks must be at the top level
   const [currentPage, setCurrentPage] = useState(0);
   const [expandedNotes, setExpandedNotes] = useState({});
+  const [showScoreDialog, setShowScoreDialog] = useState(false);
+  const [selectedRequirement, setSelectedRequirement] = useState(null);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [showCompletionDialog, setShowCompletionDialog] = useState(false);
   const [hasShownCompletion, setHasShownCompletion] = useState(false);
@@ -166,9 +169,29 @@ const Roadmap = () => {
       return;
     }
 
+    // Check if this requires score input
+    const requiresScoreInput = ['sat_scores', 'minimum_gpa', 'toefl_ielts', 'ielts_toefl', 'language_proficiency'].includes(requirementId);
+    
     // If trying to check, verify dependencies
     if (areDependenciesMet(requirement, completedRequirements)) {
-      updateRequirement(requirementId, true);
+      if (requiresScoreInput && university) {
+        // Show score input dialog
+        setSelectedRequirement(requirement);
+        setShowScoreDialog(true);
+      } else {
+        updateRequirement(requirementId, true);
+      }
+    }
+  };
+
+  const handleScoreSubmit = (score) => {
+    if (selectedRequirement) {
+      // Save the score in notes
+      updateNote(selectedRequirement.id, `Score: ${score}`);
+      // Mark as completed
+      updateRequirement(selectedRequirement.id, true);
+      setShowScoreDialog(false);
+      setSelectedRequirement(null);
     }
   };
 
@@ -634,6 +657,20 @@ const Roadmap = () => {
         autoCompletedItems={autoCompletedItems}
         onClose={() => setShowAutoCompleteNotification(false)}
       />
+
+      {/* Score Input Dialog */}
+      {selectedRequirement && (
+        <ScoreInputDialog
+          isOpen={showScoreDialog}
+          onClose={() => {
+            setShowScoreDialog(false);
+            setSelectedRequirement(null);
+          }}
+          onSubmit={handleScoreSubmit}
+          requirement={selectedRequirement}
+          university={university}
+        />
+      )}
     </section>
   );
 };
